@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Influencer Auto-Prompt Generator with Multi-Storage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .storage-section {
+            background-color: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #ffeaa7;
+        }
+        .storage-section h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .storage-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .storage-method {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .storage-method h4 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .prompt-parser-section {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #90caf9;
+        }
+        .profile-selector {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        .profile-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        .profile-section h3, .prompt-parser-section h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        select {
+            cursor: pointer;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .parse-button {
+            background-color: #9c27b0;
+        }
+        .parse-button:hover {
+            background-color: #7b1fa2;
+        }
+        .save-button {
+            background-color: #28a745;
+        }
+        .save-button:hover {
+            background-color: #218838;
+        }
+        .delete-button {
+            background-color: #dc3545;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .new-button {
+            background-color: #6c757d;
+        }
+        .new-button:hover {
+            background-color: #5a6268;
+        }
+        .export-button {
+            background-color: #17a2b8;
+        }
+        .export-button:hover {
+            background-color: #138496;
+        }
+        .import-button {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .import-button:hover {
+            background-color: #e0a800;
+        }
+        .sheets-button {
+            background-color: #4285f4;
+        }
+        .sheets-button:hover {
+            background-color: #1a73e8;
+        }
+        .output-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .output-section h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        #generated-prompt {
+            background-color: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            min-height: 100px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .copy-button {
+            background-color: #17a2b8;
+            margin-top: 10px;
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+        .copy-button:hover {
+            background-color: #138496;
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+        .col {
+            flex: 1;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .profile-actions select {
+            flex: 1;
+            min-width: 200px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        #import-data {
+            width: 100%;
+            height: 200px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .info-text {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+        .parsed-results {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+        .parsed-results h4 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        .parsed-item {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .parsed-item strong {
+            color: #1976d2;
+        }
+        .sync-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .sync-status.synced {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .sync-status.not-synced {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .setup-instructions {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .setup-instructions ol {
+            margin-left: 20px;
+        }
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+            .profile-actions {
+                flex-direction: column;
+            }
+            .profile-actions select {
+                width: 100%;
+            }
+            .storage-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Influencer Auto-Prompt Generator</h1>
+        
+        <!-- Storage Options Section -->
+        <div class="storage-section">
+            <h3>Storage Options <span class="sync-status not-synced" id="sync-status">Not Connected</span></h3>
+            <div class="storage-options">
+                <div class="storage-method">
+                    <h4>📁 Local JSON</h4>
+                    <p style="font-size: 14px; margin: 10px 0;">Export and import profiles as JSON files</p>
+                    <button class="export-button" onclick="exportProfiles()">Export JSON</button>
+                    <button class="import-button" onclick="showImportModal()">Import JSON</button>
+                </div>
+                <div class="storage-method">
+                    <h4>☁️ Google Sheets</h4>
+                    <p style="font-size: 14px; margin: 10px 0;">Sync profiles with Google Sheets</p>
+                    <button class="sheets-button" onclick="showSheetsSetup()" id="sheets-setup-btn">Setup Sheets</button>
+                    <button class="sheets-button" onclick="syncWithSheets()" id="sheets-sync-btn" style="display:none;">Sync Now</button>
+                    <button class="save-button" onclick="loadFromSheets()" id="sheets-load-btn" style="display:none;">Load from Sheets</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prompt Parser Section -->
+        <div class="prompt-parser-section">
+            <h3>Extract Profile from Prompt</h3>
+            <div class="form-group">
+                <label for="prompt-input">Paste Existing Prompt:</label>
+                <textarea id="prompt-input" placeholder="Paste a prompt here to extract profile details..."></textarea>
+            </div>
+            <button class="parse-button" onclick="parsePrompt()">Extract Profile Details</button>
+            <div class="error-message" id="parse-error"></div>
+            <div class="parsed-results" id="parsed-results">
+                <h4>Extracted Details:</h4>
+                <div id="parsed-content"></div>
+                <button class="save-button" style="margin-top: 10px;" onclick="createProfileFromParsed()">Create New Profile</button>
+            </div>
+        </div>
+
+        <div class="profile-selector">
+            <h3>Profile Management</h3>
+            <div class="profile-actions">
+                <select id="profile-select" onchange="loadProfile()">
+                    <option value="">Select a profile...</option>
+                </select>
+                <button class="new-button" onclick="newProfile()">New Profile</button>
+                <button class="delete-button" onclick="deleteProfile()">Delete</button>
+            </div>
+            <div class="success-message" id="success-message"></div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Character Profile Setup</h3>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="char-name">Character Name:</label>
+                        <input type="text" id="char-name" placeholder="e.g., linda tutino">
+                    </div>
+                    <div class="form-group">
+                        <label for="body-type">Body Type:</label>
+                        <input type="text" id="body-type" placeholder="e.g., (skinny:1.6), (Petite:1.3)">
+                    </div>
+                    <div class="form-group">
+                        <label for="expression">Default Expression:</label>
+                        <input type="text" id="expression" placeholder="e.g., (fierce look)">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="hair-color">Hair Color:</label>
+                        <input type="text" id="hair-color" placeholder="e.g., (Redhead:1.4)">
+                    </div>
+                    <div class="form-group">
+                        <label for="ethnicity">Ethnicity/Skin Tone:</label>
+                        <input type="text" id="ethnicity" placeholder="e.g., (Israeli skin tone, typical Israeli female features:1.2)">
+                    </div>
+                    <div class="form-group">
+                        <label for="physical-features">Physical Features:</label>
+                        <input type="text" id="physical-features" placeholder="e.g., (size 32c breasts)">
+                    </div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="save-button" onclick="saveProfile()">Save Profile</button>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="generatePrompt()">Generate Prompt</button>
+        </div>
+
+        <div class="output-section">
+            <h3>Generated Prompt:</h3>
+            <div id="generated-prompt"></div>
+            <button class="copy-button" onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <!-- Modal for new profile name -->
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Enter Profile Name</h3>
+            <input type="text" id="new-profile-name" placeholder="Enter profile name..." style="width: 100%; margin: 20px 0;">
+            <button onclick="createNewProfile()">Create Profile</button>
+        </div>
+    </div>
+
+    <!-- Modal for import -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeImportModal()">&times;</span>
+            <h3>Import Profiles</h3>
+            <p>Paste your exported profile data below:</p>
+            <textarea id="import-data" placeholder="Paste exported JSON data here..."></textarea>
+            <button onclick="importProfiles()">Import</button>
+        </div>
+    </div>
+
+    <!-- Modal for Google Sheets Setup -->
+    <div id="sheetsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSheetsModal()">&times;</span>
+            <h3>Google Sheets Setup</h3>
+            <div class="setup-instructions">
+                <p><strong>To use Google Sheets storage:</strong></p>
+                <ol>
+                    <li>Create a new Google Sheet</li>
+                    <li>Go to Extensions → Apps Script</li>
+                    <li>Copy and paste the code below</li>
+                    <li>Deploy as Web App (Execute as: Me, Access: Anyone)</li>
+                    <li>Copy the Web App URL and paste it below</li>
+                </ol>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="sheets-url">Google Sheets Web App URL:</label>
+                <input type="text" id="sheets-url" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+                <button class="save-button" style="margin-top: 10px;" onclick="saveSheetsUrl()">Save URL</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <h4>Apps Script Code:</h4>
+                <textarea style="width: 100%; height: 300px; font-family: monospace; font-size: 12px;" readonly>
+function doGet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const profiles = {};
+  
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0]) {
+      profiles[data[i][0]] = {
+        name: data[i][1],
+        bodyType: data[i][2],
+        expression: data[i][3],
+        hairColor: data[i][4],
+        ethnicity: data[i][5],
+        physicalFeatures: data[i][6]
+      };
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify(profiles))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const profiles = JSON.parse(e.postData.contents);
+  
+  // Clear existing data
+  sheet.clear();
+  
+  // Add headers
+  sheet.getRange(1, 1, 1, 7).setValues([['Profile Name', 'Character Name', 'Body Type', 'Expression', 'Hair Color', 'Ethnicity', 'Physical Features']]);
+  
+  // Add profile data
+  const rows = [];
+  for (const [profileName, data] of Object.entries(profiles)) {
+    rows.push([
+      profileName,
+      data.name || '',
+      data.bodyType || '',
+      data.expression || '',
+      data.hairColor || '',
+      data.ethnicity || '',
+      data.physicalFeatures || ''
+    ]);
+  }
+  
+  if (rows.length > 0) {
+    sheet.getRange(2, 1, rows.length, 7).setValues(rows);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({success: true}))
+    .setMimeType(ContentService.MimeType.JSON);
+}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize profiles in memory
+        let profiles = {
+            'Linda Tutino': {
+                name: 'linda tutino',
+                bodyType: '(skinny:1.6), (Petite:1.3)',
+                expression: '(fierce look)',
+                hairColor: '(Redhead:1.4)',
+                ethnicity: '(Israeli skin tone, typical Israeli female features:1.2)',
+                physicalFeatures: '(size 32c breasts)'
+            },
+            'Natasha Blom': {
+                name: 'natasha blom',
+                bodyType: '(skinny:1.5), (Petite:1.3)',
+                expression: '(fierce look)',
+                hairColor: '(brunette:1.3)',
+                ethnicity: '(Swedish skin tone, typical Swedish female features)',
+                physicalFeatures: '(size 32c breasts:1.3)'
+            }
+        };
+        
+        let currentProfileName = '';
+        let parsedProfileData = null;
+        let sheetsUrl = '';
+
+        // Check for saved Sheets URL
+        try {
+            sheetsUrl = localStorage.getItem('ai-influencer-sheets-url') || '';
+            if (sheetsUrl) {
+                document.getElementById('sheets-setup-btn').style.display = 'none';
+                document.getElementById('sheets-sync-btn').style.display = 'inline-block';
+                document.getElementById('sheets-load-btn').style.display = 'inline-block';
+                updateSyncStatus(true);
+            }
+        } catch (e) {
+            console.log('localStorage not available');
+        }
+
+        // Randomization arrays (keeping but truncating for space)
+        const shotTypes = [
+            "(Medium full shot)",
+            "(Medium full shot:1.1)",
+            "(Medium full shot:1.2)",
+            "(Medium full shot:1.3)",
+            "(Full body shot)",
+            "(Full body shot:1.1)",
+            "(Full body shot:1.3)"
+        ];
+
+        const cameraAngles = [
+            "",
+            "low angle view, ",
+            "(low angle view:1.2), ",
+            "(low angle view:1.3), ",
+            "high angle view, ",
+            "(high angle view:1.2), ",
+            "low angle side view, "
+        ];
+
+        const poses = [
+            "standing",
+            "walking",
+            "sitting",
+            "kneeling",
+            "standing, posing",
+            "walking and posing",
+            "sitting, posing",
+            "kneeling, posing",
+            "standing with hands over head",
+            "standing, hands on head",
+            "kneeling, hands over head",
+            "walking, hands over head",
+            "sitting on the ground",
+            "leaning against wall",
+            "walking towards the camera"
+        ];
+
+        const hairStyles = [
+            "boho waves",
+            "(boho waves)",
+            "(boho waves:1.1)",
+            "(boho waves:1.2)",
+            "double dutch braids",
+            "(double dutch braids)",
+            "(double dutch braids:1.1)",
+            "(double dutch braids:1.2)",
+            "updo",
+            "(boho updo:1.1)",
+            "(slicked back high ponytail:1.3)",
+            "updo rear ponytail",
+            "mermaid hair dutch braids",
+            "(brunette dutch braids:1.2)"
+        ];
+
+        const outfits = [
+            "wearing a (brown:1.2) knit Cropped Off one Shoulder Long Sleeve sweater BREAK , (beige v-string micro thong:1.1)",
+            "wearing (open front red silk robe:1.2) BREAK (yellow lace bra and thong panties:1.2)",
+            "braless, Distressed grey denim mini skirt with a cropped white tee, completed with white sneakers, a grey crop denim jacket, and layered necklaces",
+            "wearing (little red riding hood costume:1.1) (red hooded gown:1.2) BREAK (red lace bra:1.3) and microskirt with, thigh high leggings, red choker",
+            "wearing (open pink Cardigan:1.3) BREAK, (turquoise lace bra and thong:1.3)",
+            "wearing a (blue hoodie:1.3) BREAK, (white thong panties), midriff",
+            "wearing a (pink cropped hoodie:1.2) BREAK, (turquoise thong panties:1.2), pink pioneer dj headphones on head",
+            "wearing a white fuzzy trim hooded crop top sweater BREAK, (white v-string micro thong:1.2), with white choker and white pioneer headphones",
+            "wearing a white button front micro skirt, a cropped sleeveless blouse, completed with a leather belt and a delicate choker necklace, cleavage, midriff, legs",
+            "wearing a (open black hooded cloak:1.2) BREAK , sexy (black:1.2) Lace Up bustier dress, black microskirt, black choker, cleavage",
+            "wearing a (yellow spandex mock neck long sleeve bodysuit:1.4) , sexy legs, yellow thigh highs",
+            "wearing a thin (white knitted turtleneck cropped sweater:1.1) BREAK, (v-string micro thong:1.3), midriff",
+            "wearing a Crochet-trimmed kaftan worn over a colorful string bikini, paired with embellished sandals, a beach tote, and a pair of aviator sunglasses",
+            "wearing a (turquoise long sleeve lace deep-v bodysuit:1.4), stalkings, turquoise choker, cleavage",
+            "wearing a (red lace plunge lingerie deep-v bodysuit:1.3), stalkings, red choker, cleavage",
+            "wearing a red bra lace trim and a (red v-string micro thong:1.3), red choker, midrriff, cleavage",
+            "wearing a (purple bikini:1.3), purple choker",
+            "wearing (2 inch spandex navy color yoga shorts:1.3) and a (navy sports bra), midriff, cleavage, sexy legs",
+            "braless, wearing a (yellow deep v-neck crop top:1.3), layered necklace BREAK, tight yellow denim micro skirt, (sexy legs:1.2), midriff, cleavage, clear aviator sunglasses",
+            "wearing a (sexy black deep v-neck mini club dress:1.3) , side slit sexy legs",
+            "wearing a sexy (black lace bra:1.1) and (v-string micro thong:1.3) BREAK, black opened cropped leather jacket and choker",
+            "wearing an elegant white (deep v-neck mini club short dress:1.3), (legs:1.2), cleavage, braless",
+            "wearing a (black long sleeve lace deep-v bodysuit:1.4), black choker, (sexy legs:1.2), cleavage",
+            "wearing an open blue cropped hoodie BREAK, and lace bra, (white v-string micro thong:1.3), cleavage",
+            "wearing a (maroon lace plunge lingerie deep-v bodysuit:1.3), stalkings, maroon choker, cleavage",
+            "wearing a (white lace trim camisole top:1.2) BREAK, (white v-string micro thong:1.3), midriff",
+            "wearing a turquoise lace bra, cleavage, (v-string micro thong:1.3), turquoise choker",
+            "wearing a thin (black knitted turtleneck cropped sweater:1.1) BREAK, black (v-string micro thong:1.3), midriff",
+            "wearing a (earthy colors knitted short sleeve blouse front tied) BREAK, (v-string micro thong:1.3)",
+            "wearing a pastel colored short sleeve baby tee shirt ((blouse)) open front lace trim BREAK, (v-string micro thong:1.3)",
+            "wearing a colorful (multicolored floral print short sleeve blouse front tied) BREAK, (v-string micro thong:1.3), midriff",
+            "wearing (green lace ligerie) BREAK, pink (v-string micro thong:1.3), midriff, cleavage",
+            "wearing (navy lace ligerie) BREAK, navy (v-string micro thong:1.3), midriff, cleavage",
+            "wearing a thin (pink knitted turtleneck cropped sweater:1.1) BREAK, pink (v-string micro thong:1.3), midriff",
+            "wearing a thin (purple knitted turtleneck cropped sweater:1.1) BREAK, purple (v-string micro thong:1.3), midriff",
+            "wearing a colorful cotton fitted baby tee shirt BREAK, (v-string micro thong:1.3), beanie",
+            "wearing a colorful cotton fitted baby tee shirt v-neck BREAK, (v-string micro thong:1.3), cute hat",
+            "wearing a cotton hoodie sweater open front with bra BREAK, (v-string micro thong:1.3)",
+            "wearing a colorful (multicolored knitted short sleeve blouse front tied) BREAK, (v-string micro thong:1.3), midriff",
+            "wearing a colorful cotton baby tee shirt v-neck BREAK, (v-string micro thong:1.3)",
+            "wearing a (red thong bikini:1.2), cleavage",
+            "wearing (red lace ligerie) BREAK, red (v-string micro thong:1.3), midriff, cleavage",
+            "wearing a thin (red knitted turtleneck cropped sweater:1.1) BREAK, red (v-string micro thong:1.3), midriff",
+            "wearing a (white long sleeve lace deep-v bodysuit:1.4), stalkings, white choker, cleavage",
+            "wearing a thin (white knitted turtleneck cropped sweater:1.1) BREAK, (v-string micro thong:1.3), midriff",
+            "wearing (yellow lace ligerie) BREAK, yellow (v-string micro thong:1.3), midriff, cleavage",
+            "wearing a thin (yellow knitted turtleneck cropped sweater:1.1) BREAK, yellow (v-string micro thong:1.3), midriff",
+            "wearing a cotton (teal tank top shirt) with lace trim BREAK, (teal cotton v-string micro thong:1.3) with lace trim, cleavage, sexy legs",
+            "wearing a sexy (jade micro bikini:1.3)",
+            "wearing a sexy (red micro bikini:1.3), red choker",
+            "wearing a sexy (yellow micro bikini:1.3), yellow choker"
+        ];
+
+        const locations = [
+            "tan walls, house plants background, living room scenery",
+            "cozy livingroom with grey walls and gothic drapes, gothic furniture, many candles are lit up on the fireplace mantle and many candle stands in background, gothic scenery",
+            "(plain grey background:1.2)",
+            "forest at night, lit with moonlight, enchanted forest scenery",
+            "natural boho living room with canvas couch and natural pillows and many hanging ivy plants on the natural walls, detailed background",
+            "boho style scenery, lots of houseplants, well lit background",
+            "indoor boho style house scenery background, cinematic lighting",
+            "beautiful grass field on a hill scenery, golden hour, cinematic lighting",
+            "thick fuzzy white comforter and white pillows, bedroom scenery",
+            "grape vinyard scenery, golden hour",
+            "ancient gothic room cluttered with many candelabras, lit candles, misty haze, arched stain glass windows, dark black magic witchcraft scenery",
+            "on a rooftop overlooking downtown Los Angeles at night, lit by the moonlight",
+            "cozy livingroom with white walls and white drapes, white fuzzy pillows, dramatic lighting",
+            "golden hour, indoor pool scenery",
+            "outdoor hill scenery, golden hour, sunset lighting",
+            "hotel room in Las Vegas scenery",
+            "las vegas hotel pool scenery",
+            "outdoor nature hiking on a hill scenery, redwood forest background, sunset lighting, golden hour",
+            "crowded Coachella music festival scenery, golden hour, golden lighting",
+            "romantic outdoor italian bistro at night scenery, lit by the moonlight",
+            "historic colonial style mansion scenery, well preserved antique furniture, wooden staircase, dramatic lighting",
+            "intamate boho style outdoor restaurant with string lights and big plants background scenery, midnight, lit by moonlight",
+            "fashion show with a live audience, spot lights on model, truss stage lighting, crowded fashion show scenery",
+            "outdoor Joshua tree desert scenery, rocks, golden hour, sunset lighting",
+            "retail clothing store, dressing room, clothes racks, clothes hangers, mirrors",
+            "modern white bedroom walls, white sheets and pillows, cinematic lighting",
+            "lush forest scenery, golden hour, golden lighting",
+            "grassy hill with mountains in background, lush trees on a grassy meadow, sunny day",
+            "indoor cabin in the woods, cozy fireplace, dramatic lighting",
+            "Rocky mountains scenary, mountain rocks and trees, sunny day",
+            "interior antique furnace, cute dutch livingroom, dramatic lighting",
+            "colorful interior elegant mansion scenery, studio lighting",
+            "corn farm, outdoor tall corn farm scenary, sunny day",
+            "indoor locker room scenery, studio lighting",
+            "poppy farm, outdoor hills field of poppy flowers scenary, sunny day, dramatic lighting",
+            "Rocky mountains scenary, mountain rocks and trees, sunny day, dramatic lighting",
+            "outdoor woody forest senery, golden hour",
+            "outdoor scenery, golden hour",
+            "outdoor nature scenery, golden hour",
+            "colorful exterior elegant mansion scenery, sunny day",
+            "outdoor beautiful nature scenery, golden hour",
+            "lake mead arizona scenery, sunset lighting",
+            "football field scenery, sunny day",
+            "exterior downtown city streets of miami, scenery, sunny day",
+            "snow filled forest on a snow trees scenery, sunset lighting",
+            "indoor grocery store scenery, studio lighting",
+            "sunflower farm, outdoor hills field of suflowers scenary, sunny day, dramatic lighting",
+            "boho style bedroom with boho decor scenery, teal bedding, teal pillows and sheets, natural lighting, teal walls, boho designs",
+            "miami beach palm trees ocean scenery, golden hour, golden lighting",
+            "miami beach scenery, golden hour, golden lighting",
+            "South beach miami downtown scenery, golden hour, golden lighting",
+            "backyard alley of new york, graffiti walls, urban scenery",
+            "outside a club of LA, neon lights, nightlife scenery",
+            "luxury penthouse apartment overlooking city skyline, modern furniture, floor to ceiling windows",
+            "abandoned warehouse, industrial scenery, dramatic shadows",
+            "japanese zen garden, bamboo forest background, peaceful atmosphere",
+            "vintage diner, retro decor, neon signs, checkered floor",
+            "art gallery, white walls, contemporary sculptures, minimalist scenery",
+            "underground subway station, urban atmosphere, fluorescent lighting",
+            "tropical beach resort, palm trees, tiki torches, sunset scenery",
+            "mountain cabin interior, fireplace, wooden beams, cozy atmosphere",
+            "rooftop pool party, city lights background, modern scenery",
+            "vintage record store, vinyl albums, retro posters, warm lighting",
+            "botanical garden greenhouse, exotic plants, humid atmosphere",
+            "luxury yacht deck, ocean view, golden hour lighting",
+            "desert canyon, red rocks, dramatic shadows, sunset lighting",
+            "modern gym facility, exercise equipment, mirror walls",
+            "bookstore cafe, cozy atmosphere, warm lighting, bookshelves",
+            "nightclub dance floor, laser lights, foggy atmosphere",
+            "luxury hotel lobby, marble floors, chandelier lighting",
+            "farmers market, colorful produce stands, natural lighting",
+            "university campus quad, autumn trees, golden hour",
+            "vintage theater backstage, velvet curtains, dramatic lighting",
+            "modern art museum, geometric architecture, natural light",
+            "coastal cliff overlook, ocean waves, sunset scenery",
+            "urban rooftop garden, city skyline, twilight atmosphere",
+            "vintage train station, art deco architecture, warm lighting",
+            "luxury spa interior, zen atmosphere, soft lighting",
+            "street market in bangkok, colorful lanterns, bustling scenery",
+            "ski resort lodge, fireplace, snowy mountain view",
+            "underground music venue, brick walls, stage lighting",
+            "luxury shopping mall, glass ceiling, modern architecture",
+            "vineyard estate terrace, rolling hills, golden hour",
+            "industrial loft apartment, exposed brick, large windows",
+            "beach bonfire party, sunset, warm lighting",
+            "modern office building rooftop, city view, blue hour",
+            "vintage carnival, ferris wheel, colorful lights",
+            "luxury casino interior, chandelier lighting, opulent decor",
+            "mountain hiking trail overlook, valley view, golden hour",
+            "modern kitchen, marble countertops, natural lighting",
+            "outdoor music festival, stage lights, crowd atmosphere",
+            "luxury hotel pool, cabanas, palm trees, sunset",
+            "vintage arcade, neon lights, retro game machines",
+            "botanical conservatory, glass dome, tropical plants",
+            "modern dance studio, mirror walls, wooden floors",
+            "seaside boardwalk, amusement park lights, evening",
+            "luxury yacht interior, leather seating, ocean view",
+            "mountain meadow, wildflowers, alpine scenery",
+            "urban skate park, graffiti art, golden hour",
+            "vintage jazz club, dim lighting, stage atmosphere",
+            "modern penthouse balcony, city lights, night scenery",
+            "tropical rainforest, waterfall, misty atmosphere",
+            "luxury resort beach club, infinity pool, ocean view",
+            "vintage movie theater lobby, art deco style, warm lights",
+            "modern art studio, paint splattered walls, natural light",
+            "coastal lighthouse, rocky shore, sunset scenery",
+            "urban underground tunnel, neon lights, cyberpunk atmosphere",
+            "luxury mountain chalet, snow covered peaks, fireplace",
+            "vintage bookshop, leather bound books, warm lighting",
+            "modern rooftop bar, city skyline, twilight hour",
+            "tropical island dock, turquoise water, palm trees",
+            "urban basketball court, chain fence, sunset lighting",
+            "luxury private jet interior, leather seats, window view",
+            "vintage piano bar, candlelit tables, intimate atmosphere",
+            "modern greenhouse cafe, hanging plants, natural light",
+            "desert oasis, palm trees, golden sand dunes",
+            "urban fire escape, brick building, golden hour",
+            "luxury beach villa, infinity pool, ocean sunset",
+            "vintage subway car, retro advertisements, fluorescent lights",
+            "modern sculpture park, abstract art, green lawn",
+            "coastal cave entrance, dramatic rocks, ocean spray",
+            "urban parking garage rooftop, city view, sunset",
+            "luxury wine cellar, oak barrels, mood lighting",
+            "vintage fairground, carousel horses, string lights",
+            "modern minimalist home, clean lines, natural materials",
+            "tropical mangrove forest, wooden walkway, filtered light",
+            "urban alleyway cafe, string lights, brick walls",
+            "luxury ski chalet balcony, mountain view, snow"
+        ];
+
+        // Google Sheets functions
+        function showSheetsSetup() {
+            document.getElementById('sheetsModal').style.display = 'block';
+            document.getElementById('sheets-url').value = sheetsUrl;
+        }
+
+        function closeSheetsModal() {
+            document.getElementById('sheetsModal').style.display = 'none';
+        }
+
+        function saveSheetsUrl() {
+            const url = document.getElementById('sheets-url').value.trim();
+            if (!url) {
+                alert('Please enter a valid URL');
+                return;
+            }
+            
+            sheetsUrl = url;
+            try {
+                localStorage.setItem('ai-influencer-sheets-url', url);
+            } catch (e) {
+                console.log('Could not save to localStorage');
+            }
+            
+            document.getElementById('sheets-setup-btn').style.display = 'none';
+            document.getElementById('sheets-sync-btn').style.display = 'inline-block';
+            document.getElementById('sheets-load-btn').style.display = 'inline-block';
+            closeSheetsModal();
+            updateSyncStatus(true);
+            showMessage('Google Sheets connected successfully!');
+        }
+
+        function updateSyncStatus(connected) {
+            const statusEl = document.getElementById('sync-status');
+            if (connected) {
+                statusEl.textContent = 'Connected to Sheets';
+                statusEl.className = 'sync-status synced';
+            } else {
+                statusEl.textContent = 'Not Connected';
+                statusEl.className = 'sync-status not-synced';
+            }
+        }
+
+        async function syncWithSheets() {
+            if (!sheetsUrl) {
+                showMessage('Please setup Google Sheets first');
+                return;
+            }
+
+            try {
+                const response = await fetch(sheetsUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(profiles)
+                });
+                
+                showMessage('Profiles synced to Google Sheets!');
+            } catch (error) {
+                console.error('Error syncing with Sheets:', error);
+                showMessage('Error syncing with Google Sheets');
+            }
+        }
+
+        async function loadFromSheets() {
+            if (!sheetsUrl) {
+                showMessage('Please setup Google Sheets first');
+                return;
+            }
+
+            try {
+                const response = await fetch(sheetsUrl);
+                const data = await response.json();
+                
+                profiles = data;
+                updateProfileSelect();
+                showMessage('Profiles loaded from Google Sheets!');
+                
+                // Load first profile if exists
+                const profileNames = Object.keys(profiles);
+                if (profileNames.length > 0) {
+                    currentProfileName = profileNames[0];
+                    document.getElementById('profile-select').value = currentProfileName;
+                    loadProfile();
+                }
+            } catch (error) {
+                console.error('Error loading from Sheets:', error);
+                showMessage('Error loading from Google Sheets');
+            }
+        }
+
+        // Parse prompt function
+        function parsePrompt() {
+            const promptInput = document.getElementById('prompt-input').value.trim();
+            const errorDiv = document.getElementById('parse-error');
+            const resultsDiv = document.getElementById('parsed-results');
+            const parsedContent = document.getElementById('parsed-content');
+            
+            errorDiv.style.display = 'none';
+            resultsDiv.style.display = 'none';
+            
+            if (!promptInput) {
+                showParseError('Please enter a prompt to parse');
+                return;
+            }
+
+            try {
+                // Extract name
+                const nameMatch = promptInput.match(/Her name is ([^,]+),/i);
+                const name = nameMatch ? nameMatch[1].trim() : '';
+                
+                // Extract body type - look for patterns like (skinny:1.x), (Petite:1.x)
+                const bodyTypeMatches = [];
+                const skinnyMatch = promptInput.match(/\(skinny:[\d.]+\)/i);
+                const petiteMatch = promptInput.match(/\(Petite:[\d.]+\)/i);
+                if (skinnyMatch) bodyTypeMatches.push(skinnyMatch[0]);
+                if (petiteMatch) bodyTypeMatches.push(petiteMatch[0]);
+                const bodyType = bodyTypeMatches.join(', ');
+                
+                // Extract expression
+                const expressionMatch = promptInput.match(/\((fierce look|smirking|biting lip)\)/i);
+                const expression = expressionMatch ? expressionMatch[0] : '';
+                
+                // Extract hair color
+                const hairColorMatch = promptInput.match(/\((Redhead|brunette|blonde):[\d.]+\)/i);
+                const hairColor = hairColorMatch ? hairColorMatch[0] : '';
+                
+                // Extract ethnicity
+                const ethnicityMatch = promptInput.match(/\(([^)]*(?:Israeli|Swedish|typical)[^)]*features[^)]*)\)/i);
+                const ethnicity = ethnicityMatch ? `(${ethnicityMatch[1]})` : '';
+                
+                // Extract physical features (breast size)
+                const physicalMatch = promptInput.match(/\((?:size )?32[a-c] breasts(?::[\d.]+)?\)/i);
+                const physicalFeatures = physicalMatch ? physicalMatch[0] : '';
+                
+                // Extract hair style (current, not permanent)
+                let currentHairStyle = '';
+                hairStyles.forEach(style => {
+                    if (promptInput.includes(style)) {
+                        currentHairStyle = style;
+                    }
+                });
+
+                if (!name) {
+                    showParseError('Could not find character name in the prompt');
+                    return;
+                }
+
+                // Store parsed data
+                parsedProfileData = {
+                    name: name.toLowerCase(),
+                    bodyType: bodyType,
+                    expression: expression,
+                    hairColor: hairColor,
+                    ethnicity: ethnicity,
+                    physicalFeatures: physicalFeatures
+                };
+
+                // Display results
+                let html = '';
+                html += `<div class="parsed-item"><strong>Name:</strong> ${parsedProfileData.name || 'Not found'}</div>`;
+                html += `<div class="parsed-item"><strong>Body Type:</strong> ${parsedProfileData.bodyType || 'Not found'}</div>`;
+                html += `<div class="parsed-item"><strong>Expression:</strong> ${parsedProfileData.expression || 'Not found'}</div>`;
+                html += `<div class="parsed-item"><strong>Hair Color:</strong> ${parsedProfileData.hairColor || 'Not found'}</div>`;
+                html += `<div class="parsed-item"><strong>Ethnicity:</strong> ${parsedProfileData.ethnicity || 'Not found'}</div>`;
+                html += `<div class="parsed-item"><strong>Physical Features:</strong> ${parsedProfileData.physicalFeatures || 'Not found'}</div>`;
+                if (currentHairStyle) {
+                    html += `<div class="parsed-item"><strong>Current Hair Style:</strong> ${currentHairStyle} (not part of permanent profile)</div>`;
+                }
+                
+                parsedContent.innerHTML = html;
+                resultsDiv.style.display = 'block';
+
+            } catch (error) {
+                showParseError('Error parsing prompt: ' + error.message);
+            }
+        }
+
+        // Create profile from parsed data
+        function createProfileFromParsed() {
+            if (!parsedProfileData || !parsedProfileData.name) {
+                showParseError('No valid parsed data available');
+                return;
+            }
+
+            // Create profile name from character name
+            const profileName = parsedProfileData.name.split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+
+            if (profiles[profileName]) {
+                if (!confirm(`Profile "${profileName}" already exists. Do you want to update it?`)) {
+                    return;
+                }
+            }
+
+            // Create/update profile
+            profiles[profileName] = {
+                name: parsedProfileData.name,
+                bodyType: parsedProfileData.bodyType,
+                expression: parsedProfileData.expression,
+                hairColor: parsedProfileData.hairColor,
+                ethnicity: parsedProfileData.ethnicity,
+                physicalFeatures: parsedProfileData.physicalFeatures
+            };
+
+            // Update UI
+            currentProfileName = profileName;
+            updateProfileSelect();
+            document.getElementById('profile-select').value = profileName;
+            loadProfile();
+
+            // Hide parser results
+            document.getElementById('parsed-results').style.display = 'none';
+            document.getElementById('prompt-input').value = '';
+            
+            showMessage(`Profile "${profileName}" created successfully!`);
+        }
+
+        // Show parse error
+        function showParseError(message) {
+            const errorDiv = document.getElementById('parse-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize page
+        function initializePage() {
+            updateProfileSelect();
+            // Load first profile if exists
+            const profileNames = Object.keys(profiles);
+            if (profileNames.length > 0) {
+                currentProfileName = profileNames[0];
+                document.getElementById('profile-select').value = currentProfileName;
+                loadProfile();
+            }
+        }
+
+        // Update profile dropdown
+        function updateProfileSelect() {
+            const select = document.getElementById('profile-select');
+            select.innerHTML = '<option value="">Select a profile...</option>';
+            
+            Object.keys(profiles).forEach(profileName => {
+                const option = document.createElement('option');
+                option.value = profileName;
+                option.textContent = profileName;
+                select.appendChild(option);
+            });
+        }
+
+        // Load selected profile
+        function loadProfile() {
+            const profileName = document.getElementById('profile-select').value;
+            if (!profileName) return;
+            
+            currentProfileName = profileName;
+            const profile = profiles[profileName];
+            
+            document.getElementById('char-name').value = profile.name || '';
+            document.getElementById('body-type').value = profile.bodyType || '';
+            document.getElementById('expression').value = profile.expression || '';
+            document.getElementById('hair-color').value = profile.hairColor || '';
+            document.getElementById('ethnicity').value = profile.ethnicity || '';
+            document.getElementById('physical-features').value = profile.physicalFeatures || '';
+        }
+
+        // Save current profile
+        function saveProfile() {
+            if (!currentProfileName) {
+                showMessage('Please select or create a profile first');
+                return;
+            }
+            
+            profiles[currentProfileName] = {
+                name: document.getElementById('char-name').value,
+                bodyType: document.getElementById('body-type').value,
+                expression: document.getElementById('expression').value,
+                hairColor: document.getElementById('hair-color').value,
+                ethnicity: document.getElementById('ethnicity').value,
+                physicalFeatures: document.getElementById('physical-features').value
+            };
+            
+            showMessage('Profile saved successfully!');
+            
+            // Auto-sync if connected to Sheets
+            if (sheetsUrl) {
+                syncWithSheets();
+            }
+        }
+
+        // Create new profile
+        function newProfile() {
+            document.getElementById('nameModal').style.display = 'block';
+            document.getElementById('new-profile-name').value = '';
+            document.getElementById('new-profile-name').focus();
+        }
+
+        // Create new profile with name
+        function createNewProfile() {
+            const profileName = document.getElementById('new-profile-name').value.trim();
+            if (!profileName) {
+                alert('Please enter a profile name');
+                return;
+            }
+            
+            if (profiles[profileName]) {
+                alert('A profile with this name already exists');
+                return;
+            }
+            
+            // Clear form
+            document.getElementById('char-name').value = '';
+            document.getElementById('body-type').value = '';
+            document.getElementById('expression').value = '';
+            document.getElementById('hair-color').value = '';
+            document.getElementById('ethnicity').value = '';
+            document.getElementById('physical-features').value = '';
+            
+            // Add new profile
+            profiles[profileName] = {
+                name: '',
+                bodyType: '',
+                expression: '',
+                hairColor: '',
+                ethnicity: '',
+                physicalFeatures: ''
+            };
+            
+            currentProfileName = profileName;
+            updateProfileSelect();
+            document.getElementById('profile-select').value = profileName;
+            
+            closeModal();
+            showMessage('New profile created. Please fill in the details and save.');
+        }
+
+        // Delete profile
+        function deleteProfile() {
+            if (!currentProfileName) {
+                showMessage('Please select a profile to delete');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete the profile "${currentProfileName}"?`)) {
+                delete profiles[currentProfileName];
+                
+                currentProfileName = '';
+                document.getElementById('profile-select').value = '';
+                
+                // Clear form
+                document.getElementById('char-name').value = '';
+                document.getElementById('body-type').value = '';
+                document.getElementById('expression').value = '';
+                document.getElementById('hair-color').value = '';
+                document.getElementById('ethnicity').value = '';
+                document.getElementById('physical-features').value = '';
+                
+                updateProfileSelect();
+                showMessage('Profile deleted successfully');
+                
+                // Auto-sync if connected to Sheets
+                if (sheetsUrl) {
+                    syncWithSheets();
+                }
+            }
+        }
+
+        // Export profiles
+        function exportProfiles() {
+            const dataStr = JSON.stringify(profiles, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ai-influencer-profiles.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showMessage('Profiles exported successfully!');
+        }
+
+        // Show import modal
+        function showImportModal() {
+            document.getElementById('importModal').style.display = 'block';
+            document.getElementById('import-data').value = '';
+        }
+
+        // Import profiles
+        function importProfiles() {
+            const importData = document.getElementById('import-data').value.trim();
+            if (!importData) {
+                alert('Please paste the profile data');
+                return;
+            }
+            
+            try {
+                const importedProfiles = JSON.parse(importData);
+                profiles = { ...profiles, ...importedProfiles };
+                updateProfileSelect();
+                closeImportModal();
+                showMessage('Profiles imported successfully!');
+                
+                // Auto-sync if connected to Sheets
+                if (sheetsUrl) {
+                    syncWithSheets();
+                }
+            } catch (e) {
+                alert('Invalid profile data. Please check the format.');
+            }
+        }
+
+        // Show success message
+        function showMessage(message) {
+            const messageDiv = document.getElementById('success-message');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Modal functions
+        function closeModal() {
+            document.getElementById('nameModal').style.display = 'none';
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+        }
+
+        // Generate prompt
+        function generatePrompt() {
+            if (!currentProfileName) {
+                showMessage('Please select a profile first');
+                return;
+            }
+            
+            // Get character profile values
+            const charName = document.getElementById('char-name').value;
+            const bodyType = document.getElementById('body-type').value;
+            const expression = document.getElementById('expression').value;
+            const hairColor = document.getElementById('hair-color').value;
+            const ethnicity = document.getElementById('ethnicity').value;
+            const physicalFeatures = document.getElementById('physical-features').value;
+
+            if (!charName || !bodyType || !expression || !hairColor || !ethnicity) {
+                showMessage('Please fill in all profile fields');
+                return;
+            }
+
+            // Random selections
+            const shotType = shotTypes[Math.floor(Math.random() * shotTypes.length)];
+            const cameraAngle = cameraAngles[Math.floor(Math.random() * cameraAngles.length)];
+            const pose = poses[Math.floor(Math.random() * poses.length)];
+            const hairStyle = hairStyles[Math.floor(Math.random() * hairStyles.length)];
+            const outfit = outfits[Math.floor(Math.random() * outfits.length)];
+            const location = locations[Math.floor(Math.random() * locations.length)];
+
+            // Construct the prompt
+            let prompt = `${shotType}, ${cameraAngle}(Intricate detail, cinematic lighting, professional photography) of a girl age 18 ${pose}. Her name is ${charName}, ${bodyType}, ${expression}, ${hairStyle}, ${hairColor}, ${ethnicity}, ${physicalFeatures}, ${outfit}, ${location}`;
+
+            // Display the prompt
+            document.getElementById('generated-prompt').textContent = prompt;
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const promptText = document.getElementById('generated-prompt').textContent;
+            if (promptText) {
+                navigator.clipboard.writeText(promptText).then(() => {
+                    showMessage('Prompt copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const nameModal = document.getElementById('nameModal');
+            const importModal = document.getElementById('importModal');
+            const sheetsModal = document.getElementById('sheetsModal');
+            if (event.target == nameModal) {
+                closeModal();
+            }
+            if (event.target == importModal) {
+                closeImportModal();
+            }
+            if (event.target == sheetsModal) {
+                closeSheetsModal();
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initializePage();
+        };
+    </script>
+</body>
+</html>
