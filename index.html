@@ -52,6 +52,13 @@
             margin-top: 0;
             color: #495057;
         }
+        .png-parser-section {
+            background-color: #f3e5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #ce93d8;
+        }
         .prompt-parser-section {
             background-color: #e3f2fd;
             padding: 20px;
@@ -71,7 +78,7 @@
             border-radius: 8px;
             margin-bottom: 25px;
         }
-        .profile-section h3, .prompt-parser-section h3 {
+        .profile-section h3, .prompt-parser-section h3, .png-parser-section h3 {
             margin-top: 0;
             color: #495057;
         }
@@ -84,7 +91,7 @@
             margin-bottom: 5px;
             color: #495057;
         }
-        input[type="text"], input[type="number"], select, textarea {
+        input[type="text"], input[type="number"], input[type="file"], select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ced4da;
@@ -129,6 +136,12 @@
         }
         .parse-button:hover {
             background-color: #7b1fa2;
+        }
+        .png-button {
+            background-color: #e91e63;
+        }
+        .png-button:hover {
+            background-color: #c2185b;
         }
         .save-button {
             background-color: #28a745;
@@ -283,7 +296,14 @@
             margin-top: 15px;
             display: none;
         }
-        .parsed-results h4 {
+        .png-results {
+            background-color: #f3e5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+        .parsed-results h4, .png-results h4 {
             margin-top: 0;
             color: #2e7d32;
         }
@@ -293,6 +313,28 @@
         }
         .parsed-item strong {
             color: #1976d2;
+        }
+        .metadata-section {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .metadata-section h5 {
+            margin-top: 0;
+            color: #6c757d;
+        }
+        .metadata-content {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
         }
         .sync-status {
             display: inline-block;
@@ -319,6 +361,27 @@
         }
         .setup-instructions ol {
             margin-left: 20px;
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        .file-input-label {
+            background-color: #e91e63;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        .file-input-label:hover {
+            background-color: #c2185b;
         }
         @media (max-width: 768px) {
             .row {
@@ -363,6 +426,40 @@
                     <button class="sheets-button" onclick="syncWithSheets()" id="sheets-sync-btn" style="display:none;">Sync Now</button>
                     <button class="save-button" onclick="loadFromSheets()" id="sheets-load-btn" style="display:none;">Load from Sheets</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- PNG Metadata Extractor Section -->
+        <div class="png-parser-section">
+            <h3>Extract from PNG Metadata</h3>
+            <div class="form-group">
+                <label for="png-input">Upload AI-Generated PNG Image:</label>
+                <div class="file-input-wrapper">
+                    <label for="png-input" class="file-input-label">Choose PNG File</label>
+                    <input type="file" id="png-input" accept=".png" onchange="handlePNGUpload(event)">
+                </div>
+                <span id="png-filename" style="margin-left: 10px; color: #6c757d;"></span>
+            </div>
+            <div class="error-message" id="png-error"></div>
+            <div class="png-results" id="png-results">
+                <h4>Extracted PNG Metadata:</h4>
+                <div class="metadata-section">
+                    <h5>Positive Prompt:</h5>
+                    <div class="metadata-content" id="png-positive-prompt"></div>
+                </div>
+                <div class="metadata-section">
+                    <h5>Negative Prompt:</h5>
+                    <div class="metadata-content" id="png-negative-prompt"></div>
+                </div>
+                <div class="metadata-section">
+                    <h5>Generation Settings:</h5>
+                    <div class="metadata-content" id="png-settings"></div>
+                </div>
+                <div class="metadata-section" id="adetailer-section" style="display:none;">
+                    <h5>ADetailer Settings:</h5>
+                    <div class="metadata-content" id="png-adetailer"></div>
+                </div>
+                <button class="parse-button" style="margin-top: 10px;" onclick="parseExtractedPrompt()">Extract Profile from Prompt</button>
             </div>
         </div>
 
@@ -567,6 +664,7 @@ function doPost(e) {
         let currentProfileName = '';
         let parsedProfileData = null;
         let sheetsUrl = '';
+        let extractedPrompt = '';
 
         // Check for saved Sheets URL
         try {
@@ -821,6 +919,191 @@ function doPost(e) {
             "urban alleyway cafe, string lights, brick walls",
             "luxury ski chalet balcony, mountain view, snow"
         ];
+
+        // PNG Metadata Extraction Functions
+        function handlePNGUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            document.getElementById('png-filename').textContent = file.name;
+            
+            if (file.type !== 'image/png') {
+                showPNGError('Please upload a PNG file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                extractPNGMetadata(e.target.result);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function extractPNGMetadata(arrayBuffer) {
+            try {
+                const dataView = new DataView(arrayBuffer);
+                const textChunks = [];
+                
+                // PNG signature
+                const signature = new Uint8Array(arrayBuffer, 0, 8);
+                const pngSignature = [137, 80, 78, 71, 13, 10, 26, 10];
+                
+                for (let i = 0; i < 8; i++) {
+                    if (signature[i] !== pngSignature[i]) {
+                        showPNGError('Invalid PNG file');
+                        return;
+                    }
+                }
+                
+                let offset = 8;
+                while (offset < dataView.byteLength) {
+                    const length = dataView.getUint32(offset, false);
+                    const type = String.fromCharCode(
+                        dataView.getUint8(offset + 4),
+                        dataView.getUint8(offset + 5),
+                        dataView.getUint8(offset + 6),
+                        dataView.getUint8(offset + 7)
+                    );
+                    
+                    if (type === 'tEXt' || type === 'iTXt') {
+                        const chunk = new Uint8Array(arrayBuffer, offset + 8, length);
+                        const text = new TextDecoder('utf-8').decode(chunk);
+                        textChunks.push(text);
+                    }
+                    
+                    offset += length + 12;
+                    
+                    if (type === 'IEND') break;
+                }
+                
+                displayPNGMetadata(textChunks);
+                
+            } catch (error) {
+                showPNGError('Error reading PNG metadata: ' + error.message);
+            }
+        }
+
+        function displayPNGMetadata(textChunks) {
+            const resultsDiv = document.getElementById('png-results');
+            const errorDiv = document.getElementById('png-error');
+            
+            errorDiv.style.display = 'none';
+            
+            let parameters = '';
+            let positivePrompt = '';
+            let negativePrompt = '';
+            let settings = {};
+            let adetailerSettings = '';
+            
+            // Parse text chunks
+            textChunks.forEach(chunk => {
+                if (chunk.includes('parameters')) {
+                    // Extract parameters from Automatic1111 format
+                    const parts = chunk.split('\x00');
+                    if (parts.length > 1) {
+                        parameters = parts[1];
+                    }
+                }
+            });
+            
+            if (parameters) {
+                // Extract positive prompt (everything before "Negative prompt:")
+                const negativeIndex = parameters.indexOf('Negative prompt:');
+                if (negativeIndex > -1) {
+                    positivePrompt = parameters.substring(0, negativeIndex).trim();
+                    
+                    // Extract negative prompt
+                    const afterNegative = parameters.substring(negativeIndex + 16);
+                    const settingsMatch = afterNegative.match(/\nSteps:|Steps:/);
+                    if (settingsMatch) {
+                        negativePrompt = afterNegative.substring(0, settingsMatch.index).trim();
+                        
+                        // Extract settings
+                        const settingsText = afterNegative.substring(settingsMatch.index);
+                        const settingPairs = settingsText.match(/(\w[\w\s]*?):\s*([^,\n]+)/g);
+                        if (settingPairs) {
+                            settingPairs.forEach(pair => {
+                                const [key, value] = pair.split(':').map(s => s.trim());
+                                settings[key] = value;
+                            });
+                        }
+                    } else {
+                        negativePrompt = afterNegative.trim();
+                    }
+                } else {
+                    // No negative prompt, look for settings
+                    const settingsMatch = parameters.match(/\nSteps:|Steps:/);
+                    if (settingsMatch) {
+                        positivePrompt = parameters.substring(0, settingsMatch.index).trim();
+                        const settingsText = parameters.substring(settingsMatch.index);
+                        const settingPairs = settingsText.match(/(\w[\w\s]*?):\s*([^,\n]+)/g);
+                        if (settingPairs) {
+                            settingPairs.forEach(pair => {
+                                const [key, value] = pair.split(':').map(s => s.trim());
+                                settings[key] = value;
+                            });
+                        }
+                    } else {
+                        positivePrompt = parameters.trim();
+                    }
+                }
+                
+                // Extract ADetailer settings if present
+                const adetailerMatch = parameters.match(/ADetailer[^:]*:\s*([^,]+(?:,\s*[^,]+)*)/);
+                if (adetailerMatch) {
+                    adetailerSettings = adetailerMatch[0];
+                }
+            }
+            
+            // Display extracted data
+            document.getElementById('png-positive-prompt').textContent = positivePrompt || 'No positive prompt found';
+            document.getElementById('png-negative-prompt').textContent = negativePrompt || 'No negative prompt found';
+            
+            // Format settings display
+            let settingsDisplay = '';
+            Object.entries(settings).forEach(([key, value]) => {
+                if (!key.includes('ADetailer')) {
+                    settingsDisplay += `${key}: ${value}\n`;
+                }
+            });
+            document.getElementById('png-settings').textContent = settingsDisplay || 'No settings found';
+            
+            // Display ADetailer settings if found
+            if (adetailerSettings) {
+                document.getElementById('adetailer-section').style.display = 'block';
+                document.getElementById('png-adetailer').textContent = adetailerSettings;
+            } else {
+                document.getElementById('adetailer-section').style.display = 'none';
+            }
+            
+            // Store the positive prompt for parsing
+            extractedPrompt = positivePrompt;
+            
+            resultsDiv.style.display = 'block';
+        }
+
+        function parseExtractedPrompt() {
+            if (!extractedPrompt) {
+                showPNGError('No prompt available to parse');
+                return;
+            }
+            
+            // Set the prompt in the text area and parse it
+            document.getElementById('prompt-input').value = extractedPrompt;
+            parsePrompt();
+            
+            // Scroll to parser section
+            document.querySelector('.prompt-parser-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showPNGError(message) {
+            const errorDiv = document.getElementById('png-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
 
         // Google Sheets functions
         function showSheetsSetup() {
