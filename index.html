@@ -3,109 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Influencer Auto-Prompt Generator with Multi-Storage</title>
+    <title>Advanced AI Influencer Prompt Generator - Cyberpunk Edition</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        :root {
+            --cyber-bg: #0a0a0f;
+            --cyber-surface: #13131a;
+            --cyber-card: #1a1a24;
+            --cyber-border: #2a2a3e;
+            --neon-cyan: #00ffff;
+            --neon-pink: #ff006e;
+            --neon-purple: #bf00ff;
+            --neon-yellow: #ffee00;
+            --neon-green: #00ff88;
+            --text-primary: #e0e0ff;
+            --text-secondary: #a0a0c0;
+            --text-dim: #7070a0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 1200px;
+            font-family: 'Rajdhani', sans-serif;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: var(--cyber-bg);
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(191, 0, 255, 0.1) 0%, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 255, 0.03) 2px,
+                    rgba(0, 255, 255, 0.03) 4px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .container {
-            background-color: white;
+            background: var(--cyber-surface);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow:
+                0 0 50px rgba(0, 255, 255, 0.3),
+                inset 0 0 30px rgba(255, 0, 110, 0.1);
+            border: 1px solid var(--cyber-border);
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
         }
+
         h1 {
-            color: #333;
+            font-family: 'Orbitron', monospace;
+            color: var(--neon-cyan);
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow:
+                0 0 10px rgba(0, 255, 255, 0.8),
+                0 0 20px rgba(0, 255, 255, 0.6),
+                0 0 30px rgba(0, 255, 255, 0.4);
+            animation: neon-flicker 2s infinite alternate;
         }
-        .storage-section {
-            background-color: #fff3cd;
-            padding: 20px;
-            border-radius: 8px;
+
+        @keyframes neon-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+
+        h3 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h4 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-type-section {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
             margin-bottom: 25px;
-            border: 1px solid #ffeaa7;
+            border: 1px solid var(--neon-pink);
+            box-shadow:
+                0 0 20px rgba(255, 0, 110, 0.3),
+                inset 0 0 20px rgba(255, 0, 110, 0.1);
         }
+
+        .content-type-section h3 {
+            margin-top: 0;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+        }
+
+        .content-type-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .content-type-option {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .content-type-option input[type="radio"] {
+            margin-right: 8px;
+            accent-color: var(--neon-pink);
+        }
+
+        .content-type-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background: var(--cyber-surface);
+            border: 1px solid var(--cyber-border);
+        }
+
+        .content-type-option label:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px rgba(255, 0, 110, 0.4);
+        }
+
+        .content-type-option input[type="radio"]:checked + label {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        .storage-section {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid var(--neon-yellow);
+            box-shadow:
+                0 0 20px rgba(255, 238, 0, 0.3),
+                inset 0 0 20px rgba(255, 238, 0, 0.1);
+        }
+
         .storage-section h3 {
             margin-top: 0;
-            color: #856404;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 10px rgba(255, 238, 0, 0.8);
         }
+
         .storage-options {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             margin-bottom: 15px;
         }
+
         .storage-method {
             flex: 1;
             min-width: 250px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            border: 1px solid #dee2e6;
+            padding: 20px;
+            background: var(--cyber-surface);
+            border-radius: 8px;
+            border: 1px solid var(--cyber-border);
+            transition: all 0.3s ease;
         }
+
+        .storage-method:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
         .storage-method h4 {
             margin-top: 0;
-            color: #495057;
+            color: var(--text-primary);
         }
-        .png-parser-section {
-            background-color: #f3e5f5;
-            padding: 20px;
-            border-radius: 8px;
+
+        .advanced-options {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
             margin-bottom: 25px;
-            border: 1px solid #ce93d8;
+            border: 1px solid var(--neon-green);
+            box-shadow:
+                0 0 20px rgba(0, 255, 136, 0.3),
+                inset 0 0 20px rgba(0, 255, 136, 0.1);
         }
-        .prompt-parser-section {
-            background-color: #e3f2fd;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            border: 1px solid #90caf9;
-        }
-        .profile-selector {
-            background-color: #e9ecef;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-        .profile-section {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-        .profile-section h3, .prompt-parser-section h3, .png-parser-section h3 {
+
+        .advanced-options h3 {
             margin-top: 0;
-            color: #495057;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+            margin-bottom: 20px;
         }
+
+        .option-group {
+            background: var(--cyber-surface);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--cyber-border);
+            transition: all 0.3s ease;
+        }
+
+        .option-group:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(191, 0, 255, 0.3);
+        }
+
+        .option-group h4 {
+            margin-top: 0;
+            color: var(--neon-purple);
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-shadow: 0 0 5px rgba(191, 0, 255, 0.6);
+        }
+
+        .select-all-btn {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            padding: 6px 12px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .select-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(191, 0, 255, 0.4);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            background: var(--cyber-bg);
+            border-radius: 6px;
+            border: 1px solid var(--cyber-border);
+        }
+
+        .checkbox-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .checkbox-grid::-webkit-scrollbar-track {
+            background: var(--cyber-bg);
+            border-radius: 4px;
+        }
+
+        .checkbox-grid::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 4px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(191, 0, 255, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            accent-color: var(--neon-purple);
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0;
+            user-select: none;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .checkbox-item:hover label {
+            color: var(--text-primary);
+        }
+
+        .option-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--cyber-border);
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            background: var(--cyber-bg);
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .option-select:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 10px rgba(191, 0, 255, 0.4);
+        }
+
+        .image-parser-section {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid var(--neon-pink);
+            box-shadow:
+                0 0 20px rgba(255, 0, 110, 0.3),
+                inset 0 0 20px rgba(255, 0, 110, 0.1);
+        }
+
+        .image-parser-section h3 {
+            margin-top: 0;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
+        }
+
+        .prompt-parser-section {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid var(--neon-cyan);
+            box-shadow:
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .prompt-parser-section h3 {
+            margin-top: 0;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .profile-selector {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid var(--cyber-border);
+        }
+
+        .profile-section {
+            background: var(--cyber-card);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid var(--cyber-border);
+        }
+
+        .profile-section h3 {
+            margin-top: 0;
+            color: var(--text-primary);
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #495057;
-        }
-        input[type="text"], input[type="number"], input[type="file"], select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             font-size: 14px;
         }
+
+        input[type="text"], input[type="number"], input[type="file"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--cyber-border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--cyber-bg);
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+        }
+
         textarea {
             resize: vertical;
             min-height: 100px;
             font-family: 'Courier New', Courier, monospace;
         }
+
         select {
             cursor: pointer;
         }
+
         .button-group {
             text-align: center;
             margin-top: 30px;
@@ -115,97 +453,148 @@
             flex-wrap: wrap;
             align-items: center;
         }
+
         .quantity-group {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         .quantity-input {
             width: 80px !important;
             text-align: center;
         }
+
         button {
-            background-color: #007bff;
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(45deg, #007bff, #0056b3);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 14px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
         }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
         button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 123, 255, 0.4);
         }
+
         button:disabled {
-            background-color: #6c757d;
+            background: linear-gradient(45deg, #6c757d, #5a6268);
             cursor: not-allowed;
+            opacity: 0.7;
         }
+
         .parse-button {
-            background-color: #9c27b0;
+            background: linear-gradient(45deg, var(--neon-purple), #7b1fa2);
         }
+
         .parse-button:hover {
-            background-color: #7b1fa2;
+            box-shadow: 0 5px 20px rgba(191, 0, 255, 0.4);
         }
-        .png-button {
-            background-color: #e91e63;
+
+        .image-button {
+            background: linear-gradient(45deg, var(--neon-pink), #c2185b);
         }
-        .png-button:hover {
-            background-color: #c2185b;
+
+        .image-button:hover {
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
         }
+
         .save-button {
-            background-color: #28a745;
+            background: linear-gradient(45deg, var(--neon-green), #00c853);
         }
+
         .save-button:hover {
-            background-color: #218838;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
         }
+
         .delete-button {
-            background-color: #dc3545;
+            background: linear-gradient(45deg, #dc3545, #c82333);
         }
+
         .delete-button:hover {
-            background-color: #c82333;
+            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.4);
         }
+
         .new-button {
-            background-color: #6c757d;
+            background: linear-gradient(45deg, #6c757d, #5a6268);
         }
+
         .new-button:hover {
-            background-color: #5a6268;
+            box-shadow: 0 5px 20px rgba(108, 117, 125, 0.4);
         }
+
         .export-button {
-            background-color: #17a2b8;
+            background: linear-gradient(45deg, var(--neon-cyan), #00acc1);
         }
+
         .export-button:hover {
-            background-color: #138496;
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
         }
+
         .import-button {
-            background-color: #ffc107;
+            background: linear-gradient(45deg, var(--neon-yellow), #ffa000);
             color: #212529;
         }
+
         .import-button:hover {
-            background-color: #e0a800;
+            box-shadow: 0 5px 20px rgba(255, 238, 0, 0.4);
         }
+
         .sheets-button {
-            background-color: #4285f4;
+            background: linear-gradient(45deg, #4285f4, #1a73e8);
         }
+
         .sheets-button:hover {
-            background-color: #1a73e8;
+            box-shadow: 0 5px 20px rgba(66, 133, 244, 0.4);
         }
+
         .output-section {
             margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
+            padding: 25px;
+            background: var(--cyber-card);
+            border-radius: 10px;
+            border: 1px solid var(--neon-green);
+            box-shadow:
+                0 0 20px rgba(0, 255, 136, 0.3),
+                inset 0 0 20px rgba(0, 255, 136, 0.1);
         }
+
         .output-section h3 {
             margin-top: 0;
-            color: #495057;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
         }
+
         #generated-prompt {
-            background-color: white;
-            padding: 15px;
-            border-radius: 4px;
-            border: 1px solid #ced4da;
+            background: var(--cyber-bg);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--cyber-border);
             min-height: 100px;
             max-height: 500px;
             overflow-y: auto;
@@ -213,24 +602,45 @@
             word-wrap: break-word;
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
+            color: var(--neon-green);
+            text-shadow: 0 0 3px rgba(0, 255, 136, 0.5);
         }
+
+        #generated-prompt::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #generated-prompt::-webkit-scrollbar-track {
+            background: var(--cyber-bg);
+            border-radius: 4px;
+        }
+
+        #generated-prompt::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 4px;
+        }
+
         .copy-button {
-            background-color: #17a2b8;
+            background: linear-gradient(45deg, var(--neon-cyan), #00acc1);
             margin-top: 10px;
-            padding: 8px 20px;
+            padding: 10px 24px;
             font-size: 14px;
         }
+
         .copy-button:hover {
-            background-color: #138496;
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
         }
+
         .row {
             display: flex;
             gap: 20px;
         }
+
         .col {
             flex: 1;
         }
+
         .profile-actions {
             display: flex;
             gap: 10px;
@@ -238,10 +648,12 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
+
         .profile-actions select {
             flex: 1;
             min-width: 200px;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -250,45 +662,61 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
         }
+
         .modal-content {
-            background-color: white;
+            background: var(--cyber-surface);
             margin: 10% auto;
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             width: 80%;
             max-width: 600px;
             max-height: 70vh;
             overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow:
+                0 0 50px rgba(0, 255, 255, 0.3),
+                inset 0 0 30px rgba(255, 0, 110, 0.1);
+            border: 1px solid var(--cyber-border);
         }
+
         .close {
-            color: #aaa;
+            color: var(--text-secondary);
             float: right;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
+
         .close:hover {
-            color: #000;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px rgba(255, 0, 110, 0.8);
         }
+
         .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 4px;
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--neon-green);
+            padding: 12px;
+            border-radius: 6px;
             margin-bottom: 20px;
             display: none;
+            border: 1px solid var(--neon-green);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
         }
+
         .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 4px;
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--neon-pink);
+            padding: 12px;
+            border-radius: 6px;
             margin-bottom: 20px;
             display: none;
+            border: 1px solid var(--neon-pink);
+            text-shadow: 0 0 5px rgba(255, 0, 110, 0.5);
         }
+
         #import-data {
             width: 100%;
             height: 200px;
@@ -296,46 +724,64 @@
             font-family: monospace;
             font-size: 12px;
         }
+
         .info-text {
             font-size: 14px;
-            color: #6c757d;
+            color: var(--text-dim);
             margin-top: 10px;
         }
+
         .parsed-results {
-            background-color: #e8f5e9;
-            padding: 15px;
-            border-radius: 4px;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 20px;
+            border-radius: 6px;
             margin-top: 15px;
             display: none;
+            border: 1px solid rgba(0, 255, 136, 0.3);
         }
-        .png-results {
-            background-color: #f3e5f5;
-            padding: 15px;
-            border-radius: 4px;
+
+        .image-results {
+            background: rgba(255, 0, 110, 0.1);
+            padding: 20px;
+            border-radius: 6px;
             margin-top: 15px;
             display: none;
+            border: 1px solid rgba(255, 0, 110, 0.3);
         }
-        .parsed-results h4, .png-results h4 {
+
+        .parsed-results h4, .image-results h4 {
             margin-top: 0;
-            color: #2e7d32;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
         }
+
         .parsed-item {
-            margin: 5px 0;
+            margin: 8px 0;
             font-size: 14px;
+            color: var(--text-secondary);
         }
+
         .parsed-item strong {
-            color: #1976d2;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
         }
+
         .metadata-section {
             margin: 15px 0;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-radius: 4px;
+            padding: 15px;
+            background: var(--cyber-bg);
+            border-radius: 6px;
+            border: 1px solid var(--cyber-border);
         }
+
         .metadata-section h5 {
             margin-top: 0;
-            color: #6c757d;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
         }
+
         .metadata-content {
             font-family: 'Courier New', monospace;
             font-size: 12px;
@@ -343,64 +789,108 @@
             word-wrap: break-word;
             max-height: 200px;
             overflow-y: auto;
-            background-color: white;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
+            background: var(--cyber-surface);
+            padding: 12px;
+            border: 1px solid var(--cyber-border);
+            border-radius: 4px;
+            color: var(--text-primary);
         }
+
         .sync-status {
             display: inline-block;
-            padding: 5px 10px;
-            border-radius: 3px;
+            padding: 6px 12px;
+            border-radius: 4px;
             font-size: 12px;
             margin-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
+
         .sync-status.synced {
-            background-color: #d4edda;
-            color: #155724;
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
         }
+
         .sync-status.not-synced {
-            background-color: #f8d7da;
-            color: #721c24;
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--neon-pink);
+            border: 1px solid var(--neon-pink);
+            text-shadow: 0 0 5px rgba(255, 0, 110, 0.5);
         }
+
         .setup-instructions {
-            background-color: #e7f3ff;
-            padding: 15px;
-            border-radius: 5px;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 6px;
             margin-top: 10px;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.8;
+            border: 1px solid rgba(0, 255, 255, 0.3);
         }
+
         .setup-instructions ol {
             margin-left: 20px;
         }
+
         .file-input-wrapper {
             position: relative;
             overflow: hidden;
             display: inline-block;
         }
+
         .file-input-wrapper input[type=file] {
             position: absolute;
             left: -9999px;
         }
+
         .file-input-label {
-            background-color: #e91e63;
+            background: linear-gradient(45deg, var(--neon-pink), #c2185b);
             color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 6px;
             cursor: pointer;
             display: inline-block;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-family: 'Rajdhani', sans-serif;
         }
+
         .file-input-label:hover {
-            background-color: #c2185b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
         }
+
         .prompt-counter {
             font-size: 12px;
-            color: #6c757d;
-            margin-top: 5px;
+            color: var(--text-dim);
+            margin-top: 8px;
             text-align: right;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
+        .option-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .supported-formats {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .supported-formats strong {
+            color: var(--neon-pink);
+            text-shadow: 0 0 3px rgba(255, 0, 110, 0.5);
+        }
+
         @media (max-width: 768px) {
             .row {
                 flex-direction: column;
@@ -424,13 +914,45 @@
                 width: 100%;
                 justify-content: center;
             }
+            .option-row {
+                grid-template-columns: 1fr;
+            }
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .content-type-options {
+                flex-direction: column;
+            }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js@2.3.0/exif.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>AI Influencer Auto-Prompt Generator</h1>
-        
+        <h1>AI Influencer Prompt Generator</h1>
+
+        <!-- Content Type Selection Section -->
+        <div class="content-type-section">
+            <h3>Content Type Selection</h3>
+            <div class="content-type-options">
+                <div class="content-type-option">
+                    <input type="radio" id="content-sfw" name="content-type" value="sfw" checked>
+                    <label for="content-sfw">SFW (Safe for Work)</label>
+                </div>
+                <div class="content-type-option">
+                    <input type="radio" id="content-topless" name="content-type" value="topless">
+                    <label for="content-topless">NSFW Topless</label>
+                </div>
+                <div class="content-type-option">
+                    <input type="radio" id="content-nude" name="content-type" value="nude">
+                    <label for="content-nude">NSFW Full Nude</label>
+                </div>
+            </div>
+        </div>
+
         <!-- Storage Options Section -->
         <div class="storage-section">
             <h3>Storage Options <span class="sync-status not-synced" id="sync-status">Not Connected</span></h3>
@@ -451,35 +973,111 @@
             </div>
         </div>
 
-        <!-- PNG Metadata Extractor Section -->
-        <div class="png-parser-section">
-            <h3>Extract from PNG Metadata</h3>
-            <div class="form-group">
-                <label for="png-input">Upload AI-Generated PNG Image:</label>
-                <div class="file-input-wrapper">
-                    <label for="png-input" class="file-input-label">Choose PNG File</label>
-                    <input type="file" id="png-input" accept=".png" onchange="handlePNGUpload(event)">
+        <!-- Advanced Options Section -->
+        <div class="advanced-options">
+            <h3>Advanced Prompt Options</h3>
+            <div class="option-row">
+                <div class="option-group">
+                    <h4>
+                        Shot Types
+                        <button class="select-all-btn" onclick="toggleAll('shot-type')">Select All</button>
+                    </h4>
+                    <div class="checkbox-grid" id="shot-type-checkboxes">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
                 </div>
-                <span id="png-filename" style="margin-left: 10px; color: #6c757d;"></span>
+                <div class="option-group">
+                    <h4>
+                        Camera Angles
+                        <button class="select-all-btn" onclick="toggleAll('camera-angle')">Select All</button>
+                    </h4>
+                    <div class="checkbox-grid" id="camera-angle-checkboxes">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="option-group">
+                    <h4>
+                        Poses
+                        <button class="select-all-btn" onclick="toggleAll('pose')">Select All</button>
+                    </h4>
+                    <select id="pose-category-select" class="option-select" onchange="updatePoseCheckboxes()">
+                        <option value="all">All Categories</option>
+                        <option value="standing">Standing Poses</option>
+                        <option value="walking">Walking & Movement</option>
+                        <option value="sitting">Sitting Poses</option>
+                        <option value="kneeling">Kneeling & Crouching</option>
+                        <option value="laying">Laying Poses</option>
+                        <option value="expressive">Expressive / Emotional</option>
+                        <option value="arms">Arms & Hands Focus</option>
+                        <option value="action">Action / Dynamic</option>
+                        <option value="instagram">Instagram / Social</option>
+                    </select>
+                    <div class="checkbox-grid" id="pose-checkboxes">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="option-group">
+                    <h4>
+                        Camera Models
+                        <button class="select-all-btn" onclick="toggleAll('camera')">Select All</button>
+                    </h4>
+                    <div class="checkbox-grid" id="camera-checkboxes">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="option-group">
+                    <h4>
+                        Facial Expressions
+                        <button class="select-all-btn" onclick="toggleAll('expression')">Select All</button>
+                    </h4>
+                    <div class="checkbox-grid" id="expression-checkboxes">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="option-group">
+                    <h4>
+                        Lighting Types
+                        <button class="select-all-btn" onclick="toggleAll('lighting')">Select All</button>
+                    </h4>
+                    <div class="checkbox-grid" id="lighting-checkboxes">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
             </div>
-            <div class="error-message" id="png-error"></div>
-            <div class="png-results" id="png-results">
-                <h4>Extracted PNG Metadata:</h4>
+        </div>
+
+        <!-- Image Metadata Extractor Section -->
+        <div class="image-parser-section">
+            <h3>Extract from Image Metadata</h3>
+            <div class="form-group">
+                <label for="image-input">Upload AI-Generated Image:</label>
+                <div class="file-input-wrapper">
+                    <label for="image-input" class="file-input-label">Choose Image File</label>
+                    <input type="file" id="image-input" accept=".png,.jpg,.jpeg,.webp,.gif,.bmp" onchange="handleImageUpload(event)">
+                </div>
+                <span id="image-filename" style="margin-left: 10px; color: var(--text-dim);"></span>
+                <div class="supported-formats">
+                    <strong>Supported formats:</strong> PNG, JPEG, JPG, WebP, GIF, BMP
+                </div>
+            </div>
+            <div class="error-message" id="image-error"></div>
+            <div class="image-results" id="image-results">
+                <h4>Extracted Image Metadata:</h4>
                 <div class="metadata-section">
                     <h5>Positive Prompt:</h5>
-                    <div class="metadata-content" id="png-positive-prompt"></div>
+                    <div class="metadata-content" id="image-positive-prompt"></div>
                 </div>
                 <div class="metadata-section">
                     <h5>Negative Prompt:</h5>
-                    <div class="metadata-content" id="png-negative-prompt"></div>
+                    <div class="metadata-content" id="image-negative-prompt"></div>
                 </div>
                 <div class="metadata-section">
                     <h5>Generation Settings:</h5>
-                    <div class="metadata-content" id="png-settings"></div>
+                    <div class="metadata-content" id="image-settings"></div>
                 </div>
                 <div class="metadata-section" id="adetailer-section" style="display:none;">
                     <h5>ADetailer Settings:</h5>
-                    <div class="metadata-content" id="png-adetailer"></div>
+                    <div class="metadata-content" id="image-adetailer"></div>
                 </div>
                 <button class="parse-button" style="margin-top: 10px;" onclick="parseExtractedPrompt()">Extract Profile from Prompt</button>
             </div>
@@ -526,8 +1124,8 @@
                         <input type="text" id="body-type" placeholder="e.g., (skinny:1.6), (Petite:1.3)">
                     </div>
                     <div class="form-group">
-                        <label for="expression">Default Expression:</label>
-                        <input type="text" id="expression" placeholder="e.g., (fierce look)">
+                        <label for="breast-size">Breast Size:</label>
+                        <input type="text" id="breast-size" placeholder="e.g., (size 32c breasts)">
                     </div>
                 </div>
                 <div class="col">
@@ -538,10 +1136,6 @@
                     <div class="form-group">
                         <label for="ethnicity">Ethnicity/Skin Tone:</label>
                         <input type="text" id="ethnicity" placeholder="e.g., (Israeli skin tone, typical Israeli female features:1.2)">
-                    </div>
-                    <div class="form-group">
-                        <label for="physical-features">Physical Features:</label>
-                        <input type="text" id="physical-features" placeholder="e.g., (size 32c breasts)">
                     </div>
                 </div>
             </div>
@@ -614,20 +1208,20 @@ function doGet() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const data = sheet.getDataRange().getValues();
   const profiles = {};
-  
+
   for (let i = 1; i < data.length; i++) {
     if (data[i][0]) {
       profiles[data[i][0]] = {
         name: data[i][1],
         bodyType: data[i][2],
-        expression: data[i][3],
-        hairColor: data[i][4],
-        ethnicity: data[i][5],
-        physicalFeatures: data[i][6]
+        hairColor: data[i][3],
+        ethnicity: data[i][4],
+        breastSize: data[i][5],
+        contentType: data[i][6] || 'sfw'
       };
     }
   }
-  
+
   return ContentService.createTextOutput(JSON.stringify(profiles))
     .setMimeType(ContentService.MimeType.JSON);
 }
@@ -635,13 +1229,13 @@ function doGet() {
 function doPost(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const profiles = JSON.parse(e.postData.contents);
-  
+
   // Clear existing data
   sheet.clear();
-  
+
   // Add headers
-  sheet.getRange(1, 1, 1, 7).setValues([['Profile Name', 'Character Name', 'Body Type', 'Expression', 'Hair Color', 'Ethnicity', 'Physical Features']]);
-  
+  sheet.getRange(1, 1, 1, 7).setValues([['Profile Name', 'Character Name', 'Body Type', 'Hair Color', 'Ethnicity', 'Breast Size', 'Content Type']]);
+
   // Add profile data
   const rows = [];
   for (const [profileName, data] of Object.entries(profiles)) {
@@ -649,17 +1243,17 @@ function doPost(e) {
       profileName,
       data.name || '',
       data.bodyType || '',
-      data.expression || '',
       data.hairColor || '',
       data.ethnicity || '',
-      data.physicalFeatures || ''
+      data.breastSize || '',
+      data.contentType || 'sfw'
     ]);
   }
-  
+
   if (rows.length > 0) {
     sheet.getRange(2, 1, rows.length, 7).setValues(rows);
   }
-  
+
   return ContentService.createTextOutput(JSON.stringify({success: true}))
     .setMimeType(ContentService.MimeType.JSON);
 }</textarea>
@@ -673,21 +1267,21 @@ function doPost(e) {
             'Linda Tutino': {
                 name: 'linda tutino',
                 bodyType: '(skinny:1.6), (Petite:1.3)',
-                expression: '(fierce look)',
                 hairColor: '(Redhead:1.4)',
                 ethnicity: '(Israeli skin tone, typical Israeli female features:1.2)',
-                physicalFeatures: '(size 32c breasts)'
+                breastSize: '(size 32c breasts)',
+                contentType: 'sfw'
             },
             'Natasha Blom': {
                 name: 'natasha blom',
                 bodyType: '(skinny:1.5), (Petite:1.3)',
-                expression: '(fierce look)',
                 hairColor: '(brunette:1.3)',
                 ethnicity: '(Swedish skin tone, typical Swedish female features)',
-                physicalFeatures: '(size 32c breasts:1.3)'
+                breastSize: '(size 32c breasts:1.3)',
+                contentType: 'sfw'
             }
         };
-        
+
         let currentProfileName = '';
         let parsedProfileData = null;
         let sheetsUrl = '';
@@ -706,38 +1300,230 @@ function doPost(e) {
             console.log('localStorage not available');
         }
 
-        // Randomization arrays - UPDATED
+        // Shot types array
         const shotTypes = [
-            "(medium shot:1.1)",
-            "(medium full:1.1)",
-            "(full body shot:1.1)"
+            {id: "close-up", value: "(close-up shot:1.1)", label: "Close-up"},
+            {id: "medium", value: "(medium shot:1.1)", label: "Medium Shot"},
+            {id: "medium-full", value: "(medium full:1.1)", label: "Medium Full"},
+            {id: "full-body", value: "(full body shot:1.1)", label: "Full Body"},
+            {id: "wide", value: "(wide shot:1.1)", label: "Wide Shot"}
         ];
 
+        // Camera angles array
         const cameraAngles = [
-            "low angle view, ",
-            "high angle view, ",
-            "eye level view, "
+            {id: "low", value: "low angle view", label: "Low Angle"},
+            {id: "high", value: "high angle view", label: "High Angle"},
+            {id: "eye", value: "eye level view", label: "Eye Level"},
+            {id: "birds", value: "bird's eye view", label: "Bird's Eye"},
+            {id: "dutch", value: "dutch angle", label: "Dutch Angle"}
         ];
 
-        const poses = [
-            "standing",
-            "walking",
-            "sitting",
-            "kneeling",
-            "standing, posing",
-            "walking and posing",
-            "sitting, posing",
-            "kneeling, posing",
-            "standing with hands over head",
-            "standing, hands on head",
-            "kneeling, hands over head",
-            "walking, hands over head",
-            "sitting on the ground",
-            "leaning against wall",
-            "walking towards the camera"
-        ];
+        // Pose categories and poses
+        const poseCategories = {
+            standing: {
+                name: "Standing Poses",
+                poses: [
+                    "standing straight, neutral",
+                    "standing with arms crossed",
+                    "standing hands on hips",
+                    "standing one hand in pocket",
+                    "standing with arms behind back",
+                    "standing with hands clasped in front",
+                    "standing legs crossed",
+                    "standing wide-legged, power pose",
+                    "standing profile view",
+                    "standing looking over shoulder",
+                    "standing leaning against wall",
+                    "standing with weight on one leg",
+                    "standing tiptoes reaching up",
+                    "standing twisting torso",
+                    "standing arms stretched outward",
+                    "standing saluting",
+                    "standing with hands covering face",
+                    "standing with arms raised high",
+                    "standing relaxed, slouched",
+                    "standing with hands in jacket pockets"
+                ]
+            },
+            walking: {
+                name: "Walking & Movement",
+                poses: [
+                    "walking forward, mid-stride",
+                    "walking away from camera",
+                    "walking side view",
+                    "walking toward camera, head down",
+                    "walking hands in pockets",
+                    "walking arms swinging",
+                    "walking while looking back",
+                    "walking while turning head sideways",
+                    "walking briskly",
+                    "walking slowly, casual stroll",
+                    "running forward sprint",
+                    "running away, action shot",
+                    "running side view mid-step",
+                    "running with arms pumping",
+                    "running with hair flying back",
+                    "jogging casual pace",
+                    "leaping forward mid-run",
+                    "skipping playfully",
+                    "tiptoeing lightly",
+                    "striding confidently"
+                ]
+            },
+            sitting: {
+                name: "Sitting Poses",
+                poses: [
+                    "sitting on chair straight-backed",
+                    "sitting slouched, relaxed",
+                    "sitting cross-legged on chair",
+                    "sitting cross-legged on ground",
+                    "sitting legs crossed, arms folded",
+                    "sitting sideways, looking back",
+                    "sitting legs apart, leaning forward",
+                    "sitting with one knee up",
+                    "sitting on ground knees tucked in",
+                    "sitting with legs stretched forward",
+                    "sitting arms behind supporting body",
+                    "sitting hugging knees",
+                    "sitting chin on hand",
+                    "sitting elbows on knees",
+                    "sitting back arched, leaning",
+                    "sitting on edge of chair, forward",
+                    "sitting on stairs, casual",
+                    "sitting with one leg dangling",
+                    "sitting arms stretched overhead"
+                ]
+            },
+            kneeling: {
+                name: "Kneeling & Crouching",
+                poses: [
+                    "kneeling both knees down",
+                    "kneeling one knee up",
+                    "kneeling head bowed",
+                    "kneeling arms stretched upward",
+                    "kneeling leaning forward hands on ground",
+                    "kneeling praying pose",
+                    "kneeling with one hand on thigh",
+                    "kneeling sideways glance",
+                    "crouching low, both feet flat",
+                    "crouching on toes, heels lifted",
+                    "crouching elbows on knees",
+                    "crouching one hand on ground",
+                    "crouching ready-to-sprint stance",
+                    "squatting wide-legged",
+                    "squatting resting arms on knees",
+                    "squatting low head tilted up",
+                    "squatting holding chin",
+                    "squatting casual lean",
+                    "squatting one leg outstretched"
+                ]
+            },
+            laying: {
+                name: "Laying Poses",
+                poses: [
+                    "laying flat on back arms at sides",
+                    "laying flat on back arms stretched up",
+                    "laying flat on stomach arms folded",
+                    "laying on stomach chin resting on hands",
+                    "laying on side propped on elbow",
+                    "laying on side one hand in hair",
+                    "laying curled fetal position",
+                    "laying on back one knee bent",
+                    "laying arched back stretch",
+                    "laying sideways looking away",
+                    "laying face down arms extended",
+                    "laying on back arms covering face",
+                    "laying with legs crossed ankles",
+                    "laying on stomach legs bent up",
+                    "laying starfish pose",
+                    "laying lounging sideways, relaxed"
+                ]
+            },
+            expressive: {
+                name: "Expressive / Emotional Poses",
+                poses: [
+                    "looking straight at camera",
+                    "looking down shyly",
+                    "looking up toward sky",
+                    "looking over shoulder, smirk",
+                    "looking away distant gaze",
+                    "looking back, hair covering face",
+                    "looking sideways subtle glance",
+                    "looking down hands clasped",
+                    "looking with head tilted",
+                    "looking chin resting on hand",
+                    "looking with both hands covering mouth",
+                    "looking with one hand shielding eyes",
+                    "looking thoughtful, pensive",
+                    "looking shocked, wide eyes",
+                    "looking with hand brushing hair aside",
+                    "looking one eye covered by hand",
+                    "looking with both hands cupping face"
+                ]
+            },
+            arms: {
+                name: "Arms & Hands Focus",
+                poses: [
+                    "arms crossed firm",
+                    "arms behind head relaxed",
+                    "arms behind back formal",
+                    "arms stretched wide",
+                    "arms raised overhead",
+                    "one arm reaching forward",
+                    "one hand on hip",
+                    "one hand touching chin",
+                    "one hand covering eye",
+                    "both hands on face",
+                    "both hands in pockets",
+                    "both hands holding head",
+                    "both hands clasped in front",
+                    "one hand brushing through hair",
+                    "one hand stretched outward to camera"
+                ]
+            },
+            action: {
+                name: "Action / Dynamic",
+                poses: [
+                    "jumping straight up",
+                    "jumping arms out wide",
+                    "jumping knees bent",
+                    "jumping hair flipping",
+                    "jumping side kick",
+                    "twisting mid-air",
+                    "dance spin pose",
+                    "ballet one leg raised",
+                    "hip hop squat pose",
+                    "dramatic hand gesture",
+                    "stretching full body",
+                    "arching back hands on hips",
+                    "climbing pose",
+                    "falling backwards dramatic",
+                    "spinning mid-turn",
+                    "kicking forward"
+                ]
+            },
+            instagram: {
+                name: "Instagram / Social",
+                poses: [
+                    "hand on hip, tilted head",
+                    "sitting on knees looking back",
+                    "leaning on railing, looking away",
+                    "casual lean against car/wall",
+                    "squatting low, peace sign",
+                    "mirror selfie stance",
+                    "one leg bent against wall",
+                    "over-the-shoulder glance",
+                    "sitting legs spread, playful",
+                    "coffee cup in hand, candid",
+                    "walking crosswalk mid-step",
+                    "looking back hair over shoulder",
+                    "crouching low with phone in hand",
+                    "arms raised in celebration"
+                ]
+            }
+        };
 
-        // Updated hairStyles array with only the 6 requested styles
+        // Hair styles
         const hairStyles = [
             "(boho waves hairstyle:1.4)",
             "(double dutch braids hairstyle:1.4)",
@@ -747,6 +1533,92 @@ function doPost(e) {
             "(updo ponytail hairstyle:1.4)"
         ];
 
+        // Camera models organized by brand
+        const cameraModels = {
+            "Fujifilm GFX": [
+                "Fujifilm GFX 100S II with GF 110mm f/2 R LM WR",
+                "Fujifilm GFX 100S II with GF 100-200mm f/5.6 R LM OIS WR"
+            ],
+            "Canon EOS": [
+                "Canon EOS R5 Mark II with RF 85mm f/1.2L USM",
+                "Canon EOS R5 Mark II with RF 50mm f/1.2L USM"
+            ],
+            "Sony Alpha": [
+                "Sony A7R V with Sony FE 85mm f/1.4 GM",
+                "Sony A7R V with Sony FE 50mm f/1.2 GM",
+                "Sony A7 IV with Sony FE 85mm f/1.8",
+                "Sony A7 IV with Sony FE 70-200mm f/2.8 GM OSS II",
+                "Sony A7 III with Sony FE 85mm f/1.8",
+                "Sony A7 III with Sony FE 135mm f/1.8 GM"
+            ],
+            "Nikon Z": [
+                "Nikon Z8 with Nikkor Z 85mm f/1.8 S",
+                "Nikon Z8 with Nikkor Z 70-200mm f/2.8 VR S",
+                "Nikon Z6 III with Nikkor Z 85mm f/1.8 S",
+                "Nikon Z6 III with Nikkor Z 50mm f/1.2 S",
+                "Nikon Z7 II with Nikkor 105mm f/1.4E ED",
+                "Nikon Z7 II with Nikkor Z 50mm f/1.2 S"
+            ],
+            "Leica": [
+                "Leica M11-D with Leica APO-Summicron-M 75mm f/2 ASPH",
+                "Leica M11-D with Leica Summilux-M 50mm f/1.4 ASPH"
+            ],
+            "Hasselblad": [
+                "Hasselblad 907X 100C with XCD 80mm f/1.9",
+                "Hasselblad 907X 100C with XCD 120mm f/3.5 Macro"
+            ]
+        };
+
+        // Facial expressions (removed open mouth and big smile ones)
+        const facialExpressions = [
+            "fierce look",
+            "soft gaze",
+            "subtle smile",
+            "soft smile, eyes looking into camera",
+            "closed-mouth smile, subtle and chic",
+            "pouty lips, sultry gaze",
+            "smirk with raised eyebrow",
+            "side-eye glance with slight grin",
+            "eyes closed, slight smile, serene",
+            "looking over shoulder with sly smile",
+            "bite lower lip, flirtatious look",
+            "looking down shyly, small smile",
+            "fake serious face, straight lips",
+            "raised brows with mischievous smile",
+            "chin slightly tucked, big bright eyes",
+            "half smile, mysterious expression",
+            "one eye wink, lips pursed",
+            "caught off guard candid look",
+            "soft dreamy expression, parted lips",
+            "fierce stare, no smile",
+            "bold confident smirk, eyes locked on camera"
+        ];
+
+        // Lighting combinations
+        const lightingCombinations = [
+            "natural lighting from the left side",
+            "natural lighting from the right side",
+            "natural lighting from overhead",
+            "cinematic lighting from the left side",
+            "cinematic lighting from the right side",
+            "cinematic lighting from overhead",
+            "dramatic lighting from the left side",
+            "dramatic lighting from the right side",
+            "dramatic lighting from underneath",
+            "soft lighting from both sides",
+            "soft lighting from overhead",
+            "studio lighting from the left",
+            "studio lighting from the right",
+            "backlit natural lighting",
+            "golden hour sunlight from the left",
+            "golden hour sunlight from the right",
+            "blue hour ambient light from overhead",
+            "moonlight from the left side",
+            "fluorescent lights from overhead",
+            "warm ambient lighting from underneath"
+        ];
+
+        // SFW Outfits array (original)
         const outfits = [
             "wearing a (brown:1.2) knit Cropped Off one Shoulder Long Sleeve sweater BREAK , (beige v-string micro thong:1.1)",
             "wearing (open front red silk robe:1.2) BREAK (yellow lace bra and thong panties:1.2)",
@@ -801,151 +1673,223 @@ function doPost(e) {
             "wearing a sexy (yellow micro bikini:1.3), yellow choker"
         ];
 
-        // Updated locations with proper lighting
-        const locations = [
-            // Indoor locations with indoor lighting
-            "tan walls, house plants background, living room scenery, natural lighting",
-            "cozy livingroom with grey walls and gothic drapes, gothic furniture, many candles are lit up on the fireplace mantle and many candle stands in background, gothic scenery, dim lighting",
-            "(plain grey background:1.2), cinematic lighting",
-            "natural boho living room with canvas couch and natural pillows and many hanging ivy plants on the natural walls, detailed background, natural lighting",
-            "boho style scenery, lots of houseplants, well lit background, natural lighting",
-            "indoor boho style house scenery background, cinematic lighting",
-            "thick fuzzy white comforter and white pillows, bedroom scenery, dim lighting",
-            "ancient gothic room cluttered with many candelabras, lit candles, misty haze, arched stain glass windows, dark black magic witchcraft scenery, dramatic lighting",
-            "cozy livingroom with white walls and white drapes, white fuzzy pillows, dramatic lighting",
-            "indoor pool scenery, fluorescent lights",
-            "hotel room in Las Vegas scenery, cinematic lighting",
-            "historic colonial style mansion scenery, well preserved antique furniture, wooden staircase, dramatic lighting",
-            "retail clothing store, dressing room, clothes racks, clothes hangers, mirrors, fluorescent lights",
-            "modern white bedroom walls, white sheets and pillows, cinematic lighting",
-            "indoor cabin in the woods, cozy fireplace, dramatic lighting",
-            "interior antique furnace, cute dutch livingroom, dramatic lighting",
-            "colorful interior elegant mansion scenery, natural lighting",
-            "indoor locker room scenery, fluorescent lights",
-            "boho style bedroom with boho decor scenery, teal bedding, teal pillows and sheets, natural lighting, teal walls, boho designs",
-            "luxury penthouse apartment overlooking city skyline, modern furniture, floor to ceiling windows, natural lighting",
-            "abandoned warehouse, industrial scenery, dramatic lighting",
-            "vintage diner, retro decor, neon signs, checkered floor, dim lighting",
-            "art gallery, white walls, contemporary sculptures, minimalist scenery, fluorescent lights",
-            "underground subway station, urban atmosphere, fluorescent lights",
-            "mountain cabin interior, fireplace, wooden beams, cozy atmosphere, dim lighting",
-            "vintage record store, vinyl albums, retro posters, dim lighting",
-            "botanical garden greenhouse, exotic plants, humid atmosphere, natural lighting",
-            "modern gym facility, exercise equipment, mirror walls, fluorescent lights",
-            "bookstore cafe, cozy atmosphere, warm lighting, bookshelves, dim lighting",
-            "nightclub dance floor, laser lights, foggy atmosphere, dramatic lighting",
-            "luxury hotel lobby, marble floors, chandelier lighting, cinematic lighting",
-            "vintage theater backstage, velvet curtains, dramatic lighting",
-            "modern art museum, geometric architecture, natural lighting",
-            "vintage train station, art deco architecture, cinematic lighting",
-            "luxury spa interior, zen atmosphere, dim lighting",
-            "underground music venue, brick walls, stage lighting, dramatic lighting",
-            "luxury shopping mall, glass ceiling, modern architecture, fluorescent lights",
-            "industrial loft apartment, exposed brick, large windows, natural lighting",
-            "luxury casino interior, chandelier lighting, opulent decor, cinematic lighting",
-            "modern kitchen, marble countertops, natural lighting",
-            "vintage arcade, neon lights, retro game machines, dim lighting",
-            "botanical conservatory, glass dome, tropical plants, natural lighting",
-            "modern dance studio, mirror walls, wooden floors, fluorescent lights",
-            "luxury yacht interior, leather seating, ocean view, natural lighting",
-            "vintage jazz club, dim lighting, stage atmosphere",
-            "modern art studio, paint splattered walls, natural lighting",
-            "luxury mountain chalet interior, snow covered peaks view, fireplace, dim lighting",
-            "vintage bookshop, leather bound books, dim lighting",
-            "luxury private jet interior, leather seats, window view, natural lighting",
-            "vintage piano bar, candlelit tables, intimate atmosphere, dim lighting",
-            "modern greenhouse cafe, hanging plants, natural lighting",
-            "luxury wine cellar, oak barrels, dim lighting",
-            "modern minimalist home, clean lines, natural materials, natural lighting",
-            "vintage subway car, retro advertisements, fluorescent lights",
-            "indoor grocery store scenery, fluorescent lights",
-            
-            // Outdoor locations with outdoor lighting
-            "forest at night, enchanted forest scenery, moonlight",
-            "beautiful grass field on a hill scenery, golden hour",
-            "grape vineyard scenery, sunset",
-            "on a rooftop overlooking downtown Los Angeles at night, moonlight",
-            "outdoor hill scenery, sunrise",
-            "las vegas hotel pool scenery, sunny day",
-            "outdoor nature hiking on a hill scenery, redwood forest background, golden hour",
-            "crowded Coachella music festival scenery, sunset",
-            "romantic outdoor italian bistro at night scenery, moonlight",
-            "intimate boho style outdoor restaurant with string lights and big plants background scenery, moonlight",
-            "fashion show runway outdoors, spot lights on model, sunset",
-            "outdoor Joshua tree desert scenery, rocks, sunrise",
-            "lush forest scenery, golden hour",
-            "grassy hill with mountains in background, lush trees on a grassy meadow, sunny day",
-            "Rocky mountains scenery, mountain rocks and trees, overcast",
-            "corn farm, outdoor tall corn farm scenery, cloudy day",
-            "poppy farm, outdoor hills field of poppy flowers scenery, sunny day",
-            "outdoor woody forest scenery, blue hour",
-            "outdoor scenery, natural light",
-            "outdoor nature scenery, sunrise",
-            "colorful exterior elegant mansion scenery, sunny day",
-            "outdoor beautiful nature scenery, golden hour",
-            "lake mead arizona scenery, sunset",
-            "football field scenery, overcast",
-            "exterior downtown city streets of miami, scenery, sunny day",
-            "snow filled forest on snow covered trees scenery, cloudy day",
-            "sunflower farm, outdoor hills field of sunflowers scenery, sunrise",
-            "miami beach palm trees ocean scenery, golden hour",
-            "miami beach scenery, sunset",
-            "South beach miami downtown scenery, blue hour",
-            "backyard alley of new york, graffiti walls, urban scenery, moonlight",
-            "outside a club of LA, neon lights, nightlife scenery, moonlight",
-            "japanese zen garden, bamboo forest background, peaceful atmosphere, overcast",
-            "tropical beach resort, palm trees, tiki torches, sunset",
-            "rooftop pool party, city lights background, modern scenery, blue hour",
-            "desert canyon, red rocks, dramatic shadows, sunset",
-            "farmers market, colorful produce stands, natural light",
-            "university campus quad, autumn trees, golden hour",
-            "coastal cliff overlook, ocean waves, sunset",
-            "urban rooftop garden, city skyline, blue hour",
-            "street market in bangkok, colorful lanterns, bustling scenery, sunset",
-            "ski resort lodge exterior, snowy mountain view, overcast",
-            "vineyard estate terrace, rolling hills, golden hour",
-            "beach bonfire party, sunset",
-            "modern office building rooftop, city view, blue hour",
-            "vintage carnival, ferris wheel, colorful lights, sunset",
-            "mountain hiking trail overlook, valley view, sunrise",
-            "outdoor music festival, stage lights, crowd atmosphere, golden hour",
-            "luxury hotel pool, cabanas, palm trees, sunset",
-            "seaside boardwalk, amusement park lights, blue hour",
-            "mountain meadow, wildflowers, alpine scenery, sunny day",
-            "urban skate park, graffiti art, golden hour",
-            "modern penthouse balcony, city lights, blue hour",
-            "tropical rainforest, waterfall, misty atmosphere, natural light",
-            "luxury resort beach club, infinity pool, ocean view, sunset",
-            "coastal lighthouse, rocky shore, sunrise",
-            "urban underground tunnel entrance, neon lights, moonlight",
-            "luxury ski chalet balcony, mountain view, snow, overcast",
-            "modern rooftop bar, city skyline, blue hour",
-            "tropical island dock, turquoise water, palm trees, sunny day",
-            "urban basketball court, chain fence, golden hour",
-            "desert oasis, palm trees, golden sand dunes, sunset",
-            "urban fire escape, brick building, sunrise",
-            "luxury beach villa, infinity pool, ocean sunset",
-            "modern sculpture park, abstract art, green lawn, cloudy day",
-            "coastal cave entrance, dramatic rocks, ocean spray, overcast",
-            "urban parking garage rooftop, city view, sunset",
-            "vintage fairground, carousel horses, string lights, blue hour",
-            "tropical mangrove forest, wooden walkway, filtered light, natural light",
-            "urban alleyway cafe, string lights, brick walls, moonlight",
-            "luxury ski chalet balcony, mountain view, snow, sunrise"
+        // NSFW Topless Outfits array
+        const nsfwToplessOutfits = [
+            "wearing only a (turquoise lace v-string micro thong:1.1), turquoise choker",
+            "wearing only a (red v-string micro thong:1.3), red choker",
+            "wearing only a (black v-string micro thong:1.3), black choker",
+            "wearing only (white v-string micro thong:1.2), white choker",
+            "wearing only a (purple v-string micro thong:1.1), purple choker",
+            "wearing only a (yellow v-string micro thong:1.2), yellow choker",
+            "wearing only a (pink v-string micro thong:1.1), pink choker",
+            "wearing only a (green v-string micro thong:1.1), green choker",
+            "wearing only a (navy v-string micro thong:1.2), navy choker",
+            "wearing only a (teal v-string micro thong:1.1), teal choker",
+            "wearing only (beige v-string micro thong:1.1), beige choker",
+            "wearing only a (maroon v-string micro thong:1.2), maroon choker",
+            "wearing only white thong panties, white choker",
+            "wearing only turquoise thong panties, turquoise choker",
+            "wearing only black thong panties, black choker",
+            "wearing only red thong panties, red choker",
+            "wearing only yellow thong panties, yellow choker",
+            "wearing only pink thong panties, pink choker",
+            "wearing only purple thong panties, purple choker",
+            "wearing only navy thong panties, navy choker"
         ];
 
-        // PNG Metadata Extraction Functions
-        function handlePNGUpload(event) {
+        // NSFW Full Nude Outfits array
+        const nsfwNudeOutfits = [
+            "black choker",
+            "white choker",
+            "red choker",
+            "turquoise choker",
+            "purple choker",
+            "yellow choker",
+            "pink choker",
+            "green choker",
+            "navy choker",
+            "teal choker",
+            "maroon choker",
+            "gold choker",
+            "silver choker",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ];
+
+        // Negative prompts for different content types
+        const negativePrompts = {
+            sfw: "worst quality, low quality, normal quality, painting, drawing, sketch, cartoon, anime, render, 3d, blurry, deformed, disfigured, morbid, mutated, bad anatomy, bad art",
+            topless: "Bra, top, shirt, pants, shorts, Garter, belt, text, tall, big, obese, ugly, bad-hands-5, EasyNegative, worst quality, low quality, normal quality, painting, drawing, sketch, cartoon, anime, render, 3d, blurry, deformed, disfigured, morbid, mutated, bad anatomy, bad art",
+            nude: "Pants, shorts, Panties, Bra, top, shirt, text, tall, big, obese, ugly, EasyNegative, worst quality, low quality, normal quality, painting, drawing, sketch, cartoon, anime, render, 3d, blurry, deformed, disfigured, morbid, mutated, bad anatomy, bad art"
+        };
+
+        // Location bases (unchanged from previous)
+        const locationBases = [
+            // Indoor locations
+            "tan walls, house plants background, living room scenery",
+            "cozy livingroom with grey walls and gothic drapes, gothic furniture, many candles are lit up on the fireplace mantle and many candle stands in background, gothic scenery",
+            "(plain grey background:1.2)",
+            "natural boho living room with canvas couch and natural pillows and many hanging ivy plants on the natural walls, detailed background",
+            "boho style scenery, lots of houseplants, well lit background",
+            "indoor boho style house scenery background",
+            "thick fuzzy white comforter and white pillows, bedroom scenery",
+            "ancient gothic room cluttered with many candelabras, lit candles, misty haze, arched stain glass windows, dark black magic witchcraft scenery",
+            "cozy livingroom with white walls and white drapes, white fuzzy pillows",
+            "indoor pool scenery",
+            "hotel room in Las Vegas scenery",
+            "historic colonial style mansion scenery, well preserved antique furniture, wooden staircase",
+            "retail clothing store, dressing room, clothes racks, clothes hangers, mirrors",
+            "modern white bedroom walls, white sheets and pillows",
+            "indoor cabin in the woods, cozy fireplace",
+            "interior antique furnace, cute dutch livingroom",
+            "colorful interior elegant mansion scenery",
+            "indoor locker room scenery",
+            "boho style bedroom with boho decor scenery, teal bedding, teal pillows and sheets, teal walls, boho designs",
+            "luxury penthouse apartment overlooking city skyline, modern furniture, floor to ceiling windows",
+            "abandoned warehouse, industrial scenery",
+            "vintage diner, retro decor, neon signs, checkered floor",
+            "art gallery, white walls, contemporary sculptures, minimalist scenery",
+            "underground subway station, urban atmosphere",
+            "mountain cabin interior, fireplace, wooden beams, cozy atmosphere",
+            "vintage record store, vinyl albums, retro posters",
+            "botanical garden greenhouse, exotic plants, humid atmosphere",
+            "modern gym facility, exercise equipment, mirror walls",
+            "bookstore cafe, cozy atmosphere, warm lighting, bookshelves",
+            "nightclub dance floor, laser lights, foggy atmosphere",
+            "luxury hotel lobby, marble floors, chandelier lighting",
+            "vintage theater backstage, velvet curtains",
+            "modern art museum, geometric architecture",
+            "vintage train station, art deco architecture",
+            "luxury spa interior, zen atmosphere",
+            "underground music venue, brick walls, stage lighting",
+            "luxury shopping mall, glass ceiling, modern architecture",
+            "industrial loft apartment, exposed brick, large windows",
+            "luxury casino interior, chandelier lighting, opulent decor",
+            "modern kitchen, marble countertops",
+            "vintage arcade, neon lights, retro game machines",
+            "botanical conservatory, glass dome, tropical plants",
+            "modern dance studio, mirror walls, wooden floors",
+            "luxury yacht interior, leather seating, ocean view",
+            "vintage jazz club, stage atmosphere",
+            "modern art studio, paint splattered walls",
+            "luxury mountain chalet interior, snow covered peaks view, fireplace",
+            "vintage bookshop, leather bound books",
+            "luxury private jet interior, leather seats, window view",
+            "vintage piano bar, candlelit tables, intimate atmosphere",
+            "modern greenhouse cafe, hanging plants",
+            "luxury wine cellar, oak barrels",
+            "modern minimalist home, clean lines, natural materials",
+            "vintage subway car, retro advertisements",
+            "indoor grocery store scenery"
+        ];
+
+        const outdoorLocationBases = [
+            // Outdoor locations
+            "forest at night, enchanted forest scenery",
+            "beautiful grass field on a hill scenery",
+            "grape vineyard scenery",
+            "on a rooftop overlooking downtown Los Angeles at night",
+            "outdoor hill scenery",
+            "las vegas hotel pool scenery",
+            "outdoor nature hiking on a hill scenery, redwood forest background",
+            "crowded Coachella music festival scenery",
+            "romantic outdoor italian bistro at night scenery",
+            "intimate boho style outdoor restaurant with string lights and big plants background scenery",
+            "fashion show runway outdoors, spot lights on model",
+            "outdoor Joshua tree desert scenery, rocks",
+            "lush forest scenery",
+            "grassy hill with mountains in background, lush trees on a grassy meadow",
+            "Rocky mountains scenery, mountain rocks and trees",
+            "corn farm, outdoor tall corn farm scenery",
+            "poppy farm, outdoor hills field of poppy flowers scenery",
+            "outdoor woody forest scenery",
+            "outdoor scenery",
+            "outdoor nature scenery",
+            "colorful exterior elegant mansion scenery",
+            "outdoor beautiful nature scenery",
+            "lake mead arizona scenery",
+            "football field scenery",
+            "exterior downtown city streets of miami, scenery",
+            "snow filled forest on snow covered trees scenery",
+            "sunflower farm, outdoor hills field of sunflowers scenery",
+            "miami beach palm trees ocean scenery",
+            "miami beach scenery",
+            "South beach miami downtown scenery",
+            "backyard alley of new york, graffiti walls, urban scenery",
+            "outside a club of LA, neon lights, nightlife scenery",
+            "japanese zen garden, bamboo forest background, peaceful atmosphere",
+            "tropical beach resort, palm trees, tiki torches",
+            "rooftop pool party, city lights background, modern scenery",
+            "desert canyon, red rocks, dramatic shadows",
+            "farmers market, colorful produce stands",
+            "university campus quad, autumn trees",
+            "coastal cliff overlook, ocean waves",
+            "urban rooftop garden, city skyline",
+            "street market in bangkok, colorful lanterns, bustling scenery",
+            "ski resort lodge exterior, snowy mountain view",
+            "vineyard estate terrace, rolling hills",
+            "beach bonfire party",
+            "modern office building rooftop, city view",
+            "vintage carnival, ferris wheel, colorful lights",
+            "mountain hiking trail overlook, valley view",
+            "outdoor music festival, stage lights, crowd atmosphere",
+            "luxury hotel pool, cabanas, palm trees",
+            "seaside boardwalk, amusement park lights",
+            "mountain meadow, wildflowers, alpine scenery",
+            "urban skate park, graffiti art",
+            "modern penthouse balcony, city lights",
+            "tropical rainforest, waterfall, misty atmosphere",
+            "luxury resort beach club, infinity pool, ocean view",
+            "coastal lighthouse, rocky shore",
+            "urban underground tunnel entrance, neon lights",
+            "luxury ski chalet balcony, mountain view, snow",
+            "modern rooftop bar, city skyline",
+            "tropical island dock, turquoise water, palm trees",
+            "urban basketball court, chain fence",
+            "desert oasis, palm trees, golden sand dunes",
+            "urban fire escape, brick building",
+            "luxury beach villa, infinity pool, ocean sunset",
+            "modern sculpture park, abstract art, green lawn",
+            "coastal cave entrance, dramatic rocks, ocean spray",
+            "urban parking garage rooftop, city view",
+            "vintage fairground, carousel horses, string lights",
+            "tropical mangrove forest, wooden walkway, filtered light",
+            "urban alleyway cafe, string lights, brick walls",
+            "luxury ski chalet balcony, mountain view, snow"
+        ];
+
+        // Updated Image Metadata Extraction Functions
+        function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
-            document.getElementById('png-filename').textContent = file.name;
-            
-            if (file.type !== 'image/png') {
-                showPNGError('Please upload a PNG file');
+
+            document.getElementById('image-filename').textContent = file.name;
+
+            const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif', 'image/bmp'];
+            if (!validTypes.includes(file.type)) {
+                showImageError('Please upload a valid image file (PNG, JPEG, WebP, GIF, or BMP)');
                 return;
             }
-            
+
+            // Handle different file types
+            if (file.type === 'image/png') {
+                handlePNGFile(file);
+            } else if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+                handleJPEGFile(file);
+            } else if (file.type === 'image/webp') {
+                handleWebPFile(file);
+            } else {
+                // For GIF and BMP, try to extract basic metadata
+                handleGenericImageFile(file);
+            }
+        }
+
+        function handlePNGFile(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 extractPNGMetadata(e.target.result);
@@ -953,22 +1897,94 @@ function doPost(e) {
             reader.readAsArrayBuffer(file);
         }
 
+        function handleJPEGFile(file) {
+            // Use EXIF.js to extract JPEG metadata
+            if (typeof EXIF !== 'undefined') {
+                EXIF.getData(file, function() {
+                    const allMetaData = EXIF.getAllTags(this);
+                    let parameters = '';
+
+                    // Check for UserComment
+                    if (allMetaData.UserComment) {
+                        // UserComment might be in different formats
+                        if (Array.isArray(allMetaData.UserComment)) {
+                            // It's a byte array - decode it
+                            parameters = decodeUserComment(allMetaData.UserComment);
+                        } else if (typeof allMetaData.UserComment === 'string') {
+                            parameters = allMetaData.UserComment;
+                        } else {
+                            // Try to convert whatever format it is
+                            parameters = String(allMetaData.UserComment);
+                        }
+                    } else if (allMetaData.ImageDescription) {
+                        parameters = typeof allMetaData.ImageDescription === 'string' ?
+                            allMetaData.ImageDescription :
+                            JSON.stringify(allMetaData.ImageDescription);
+                    }
+
+                    if (parameters) {
+                        displayImageMetadata(parameters);
+                    } else {
+                        showImageError('No AI generation metadata found in this JPEG file');
+                    }
+                });
+            } else {
+                showImageError('EXIF library not loaded. Please refresh the page and try again.');
+            }
+        }
+
+        function decodeUserComment(byteArray) {
+            // Skip the first 8 bytes which contain the character encoding identifier
+            // UNICODE\0 or ASCII\0\0\0
+            let startIndex = 0;
+
+            // Check for UNICODE marker
+            if (byteArray[0] === 85 && byteArray[1] === 78 && byteArray[2] === 73 &&
+                byteArray[3] === 67 && byteArray[4] === 79 && byteArray[5] === 68 &&
+                byteArray[6] === 69) {
+                // It's Unicode, skip "UNICODE\0"
+                startIndex = 8;
+            }
+
+            // Decode the rest as UTF-16
+            let result = '';
+            for (let i = startIndex; i < byteArray.length; i += 2) {
+                // UTF-16 Big Endian (MM byte order)
+                const charCode = (byteArray[i] << 8) | byteArray[i + 1];
+                if (charCode === 0) break; // Null terminator
+                result += String.fromCharCode(charCode);
+            }
+
+            return result;
+        }
+
+        function handleWebPFile(file) {
+            // WebP metadata extraction is more complex
+            // For now, show a message that WebP metadata extraction is limited
+            showImageError('WebP metadata extraction is limited. The file may not contain AI generation data.');
+        }
+
+        function handleGenericImageFile(file) {
+            // For other formats, try to read as much as possible
+            showImageError('This image format may not contain AI generation metadata');
+        }
+
         function extractPNGMetadata(arrayBuffer) {
             try {
                 const dataView = new DataView(arrayBuffer);
                 const textChunks = [];
-                
+
                 // PNG signature
                 const signature = new Uint8Array(arrayBuffer, 0, 8);
                 const pngSignature = [137, 80, 78, 71, 13, 10, 26, 10];
-                
+
                 for (let i = 0; i < 8; i++) {
                     if (signature[i] !== pngSignature[i]) {
-                        showPNGError('Invalid PNG file');
+                        showImageError('Invalid PNG file');
                         return;
                     }
                 }
-                
+
                 let offset = 8;
                 while (offset < dataView.byteLength) {
                     const length = dataView.getUint32(offset, false);
@@ -978,101 +1994,107 @@ function doPost(e) {
                         dataView.getUint8(offset + 6),
                         dataView.getUint8(offset + 7)
                     );
-                    
+
                     if (type === 'tEXt' || type === 'iTXt') {
                         const chunk = new Uint8Array(arrayBuffer, offset + 8, length);
                         const text = new TextDecoder('utf-8').decode(chunk);
                         textChunks.push(text);
                     }
-                    
+
                     offset += length + 12;
-                    
+
                     if (type === 'IEND') break;
                 }
-                
-                displayPNGMetadata(textChunks);
-                
+
+                // Find parameters chunk
+                let parameters = '';
+                textChunks.forEach(chunk => {
+                    if (chunk.includes('parameters')) {
+                        const parts = chunk.split('\x00');
+                        if (parts.length > 1) {
+                            parameters = parts[1];
+                        }
+                    }
+                });
+
+                if (parameters) {
+                    displayImageMetadata(parameters);
+                } else {
+                    showImageError('No AI generation metadata found in this PNG file');
+                }
+
             } catch (error) {
-                showPNGError('Error reading PNG metadata: ' + error.message);
+                showImageError('Error reading PNG metadata: ' + error.message);
             }
         }
 
-        function displayPNGMetadata(textChunks) {
-            const resultsDiv = document.getElementById('png-results');
-            const errorDiv = document.getElementById('png-error');
-            
+        function displayImageMetadata(parameters) {
+            // Ensure parameters is a string
+            if (typeof parameters !== 'string') {
+                parameters = JSON.stringify(parameters);
+            }
+
+            const resultsDiv = document.getElementById('image-results');
+            const errorDiv = document.getElementById('image-error');
+
             errorDiv.style.display = 'none';
-            
-            let parameters = '';
+
             let positivePrompt = '';
             let negativePrompt = '';
             let settings = {};
             let adetailerSettings = '';
-            
-            // Parse text chunks
-            textChunks.forEach(chunk => {
-                if (chunk.includes('parameters')) {
-                    // Extract parameters from Automatic1111 format
-                    const parts = chunk.split('\x00');
-                    if (parts.length > 1) {
-                        parameters = parts[1];
-                    }
-                }
-            });
-            
-            if (parameters) {
-                // Extract positive prompt (everything before "Negative prompt:")
-                const negativeIndex = parameters.indexOf('Negative prompt:');
-                if (negativeIndex > -1) {
-                    positivePrompt = parameters.substring(0, negativeIndex).trim();
-                    
-                    // Extract negative prompt
-                    const afterNegative = parameters.substring(negativeIndex + 16);
-                    const settingsMatch = afterNegative.match(/\nSteps:|Steps:/);
-                    if (settingsMatch) {
-                        negativePrompt = afterNegative.substring(0, settingsMatch.index).trim();
-                        
-                        // Extract settings
-                        const settingsText = afterNegative.substring(settingsMatch.index);
-                        const settingPairs = settingsText.match(/(\w[\w\s]*?):\s*([^,\n]+)/g);
-                        if (settingPairs) {
-                            settingPairs.forEach(pair => {
-                                const [key, value] = pair.split(':').map(s => s.trim());
-                                settings[key] = value;
-                            });
-                        }
-                    } else {
-                        negativePrompt = afterNegative.trim();
+
+            // Extract positive prompt (everything before "Negative prompt:")
+            const negativeIndex = parameters.indexOf('Negative prompt:');
+            if (negativeIndex > -1) {
+                positivePrompt = parameters.substring(0, negativeIndex).trim();
+
+                // Extract negative prompt
+                const afterNegative = parameters.substring(negativeIndex + 16);
+                const settingsMatch = afterNegative.match(/\nSteps:|Steps:/);
+                if (settingsMatch) {
+                    negativePrompt = afterNegative.substring(0, settingsMatch.index).trim();
+
+                    // Extract settings
+                    const settingsText = afterNegative.substring(settingsMatch.index);
+                    const settingPairs = settingsText.match(/(\w[\w\s]*?):\s*([^,\n]+)/g);
+                    if (settingPairs) {
+                        settingPairs.forEach(pair => {
+                            const [key, value] = pair.split(':').map(s => s.trim());
+                            settings[key] = value;
+                        });
                     }
                 } else {
-                    // No negative prompt, look for settings
-                    const settingsMatch = parameters.match(/\nSteps:|Steps:/);
-                    if (settingsMatch) {
-                        positivePrompt = parameters.substring(0, settingsMatch.index).trim();
-                        const settingsText = parameters.substring(settingsMatch.index);
-                        const settingPairs = settingsText.match(/(\w[\w\s]*?):\s*([^,\n]+)/g);
-                        if (settingPairs) {
-                            settingPairs.forEach(pair => {
-                                const [key, value] = pair.split(':').map(s => s.trim());
-                                settings[key] = value;
-                            });
-                        }
-                    } else {
-                        positivePrompt = parameters.trim();
-                    }
+                    negativePrompt = afterNegative.trim();
                 }
-                
-                // Extract ADetailer settings if present
-                const adetailerMatch = parameters.match(/ADetailer[^:]*:\s*([^,]+(?:,\s*[^,]+)*)/);
-                if (adetailerMatch) {
-                    adetailerSettings = adetailerMatch[0];
+            } else {
+                // No negative prompt, look for settings
+                const settingsMatch = parameters.match(/\nSteps:|Steps:/);
+                if (settingsMatch) {
+                    positivePrompt = parameters.substring(0, settingsMatch.index).trim();
+                    const settingsText = parameters.substring(settingsMatch.index);
+                    const settingPairs = settingsText.match(/(\w[\w\s]*?):\s*([^,\n]+)/g);
+                    if (settingPairs) {
+                        settingPairs.forEach(pair => {
+                            const [key, value] = pair.split(':').map(s => s.trim());
+                            settings[key] = value;
+                        });
+                    }
+                } else {
+                    positivePrompt = parameters.trim();
                 }
             }
-            
+
+            // Extract ADetailer settings if present
+            const adetailerMatch = parameters.match(/ADetailer[^:]*:\s*([^,]+(?:,\s*[^,]+)*)/);
+            if (adetailerMatch) {
+                adetailerSettings = adetailerMatch[0];
+            }
+
             // Display extracted data
-            document.getElementById('png-positive-prompt').textContent = positivePrompt || 'No positive prompt found';
-            document.getElementById('png-negative-prompt').textContent = negativePrompt || 'No negative prompt found';
-            
+            document.getElementById('image-positive-prompt').textContent = positivePrompt || 'No positive prompt found';
+            document.getElementById('image-negative-prompt').textContent = negativePrompt || 'No negative prompt found';
+
             // Format settings display
             let settingsDisplay = '';
             Object.entries(settings).forEach(([key, value]) => {
@@ -1080,38 +2102,38 @@ function doPost(e) {
                     settingsDisplay += `${key}: ${value}\n`;
                 }
             });
-            document.getElementById('png-settings').textContent = settingsDisplay || 'No settings found';
-            
+            document.getElementById('image-settings').textContent = settingsDisplay || 'No settings found';
+
             // Display ADetailer settings if found
             if (adetailerSettings) {
                 document.getElementById('adetailer-section').style.display = 'block';
-                document.getElementById('png-adetailer').textContent = adetailerSettings;
+                document.getElementById('image-adetailer').textContent = adetailerSettings;
             } else {
                 document.getElementById('adetailer-section').style.display = 'none';
             }
-            
+
             // Store the positive prompt for parsing
             extractedPrompt = positivePrompt;
-            
+
             resultsDiv.style.display = 'block';
         }
 
         function parseExtractedPrompt() {
             if (!extractedPrompt) {
-                showPNGError('No prompt available to parse');
+                showImageError('No prompt available to parse');
                 return;
             }
-            
+
             // Set the prompt in the text area and parse it
             document.getElementById('prompt-input').value = extractedPrompt;
             parsePrompt();
-            
+
             // Scroll to parser section
             document.querySelector('.prompt-parser-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function showPNGError(message) {
-            const errorDiv = document.getElementById('png-error');
+        function showImageError(message) {
+            const errorDiv = document.getElementById('image-error');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
             setTimeout(() => {
@@ -1135,14 +2157,14 @@ function doPost(e) {
                 alert('Please enter a valid URL');
                 return;
             }
-            
+
             sheetsUrl = url;
             try {
                 localStorage.setItem('ai-influencer-sheets-url', url);
             } catch (e) {
                 console.log('Could not save to localStorage');
             }
-            
+
             document.getElementById('sheets-setup-btn').style.display = 'none';
             document.getElementById('sheets-sync-btn').style.display = 'inline-block';
             document.getElementById('sheets-load-btn').style.display = 'inline-block';
@@ -1177,7 +2199,7 @@ function doPost(e) {
                     },
                     body: JSON.stringify(profiles)
                 });
-                
+
                 showMessage('Profiles synced to Google Sheets!');
             } catch (error) {
                 console.error('Error syncing with Sheets:', error);
@@ -1194,11 +2216,11 @@ function doPost(e) {
             try {
                 const response = await fetch(sheetsUrl);
                 const data = await response.json();
-                
+
                 profiles = data;
                 updateProfileSelect();
                 showMessage('Profiles loaded from Google Sheets!');
-                
+
                 // Load first profile if exists
                 const profileNames = Object.keys(profiles);
                 if (profileNames.length > 0) {
@@ -1218,10 +2240,10 @@ function doPost(e) {
             const errorDiv = document.getElementById('parse-error');
             const resultsDiv = document.getElementById('parsed-results');
             const parsedContent = document.getElementById('parsed-content');
-            
+
             errorDiv.style.display = 'none';
             resultsDiv.style.display = 'none';
-            
+
             if (!promptInput) {
                 showParseError('Please enter a prompt to parse');
                 return;
@@ -1231,7 +2253,7 @@ function doPost(e) {
                 // Extract name
                 const nameMatch = promptInput.match(/Her name is ([^,]+),/i);
                 const name = nameMatch ? nameMatch[1].trim() : '';
-                
+
                 // Extract body type - look for patterns like (skinny:1.x), (Petite:1.x)
                 const bodyTypeMatches = [];
                 const skinnyMatch = promptInput.match(/\(skinny:[\d.]+\)/i);
@@ -1239,23 +2261,19 @@ function doPost(e) {
                 if (skinnyMatch) bodyTypeMatches.push(skinnyMatch[0]);
                 if (petiteMatch) bodyTypeMatches.push(petiteMatch[0]);
                 const bodyType = bodyTypeMatches.join(', ');
-                
-                // Extract expression
-                const expressionMatch = promptInput.match(/\((fierce look|smirking|biting lip)\)/i);
-                const expression = expressionMatch ? expressionMatch[0] : '';
-                
+
                 // Extract hair color
                 const hairColorMatch = promptInput.match(/\((Redhead|brunette|blonde):[\d.]+\)/i);
                 const hairColor = hairColorMatch ? hairColorMatch[0] : '';
-                
+
                 // Extract ethnicity
-                const ethnicityMatch = promptInput.match(/\(([^)]*(?:Israeli|Swedish|typical)[^)]*features[^)]*)\)/i);
+                const ethnicityMatch = promptInput.match(/\(([^)]*(?:Israeli|Swedish|Brazilian|typical)[^)]*features[^)]*)\)/i);
                 const ethnicity = ethnicityMatch ? `(${ethnicityMatch[1]})` : '';
-                
-                // Extract physical features (breast size)
-                const physicalMatch = promptInput.match(/\((?:size )?32[a-c] breasts(?::[\d.]+)?\)/i);
-                const physicalFeatures = physicalMatch ? physicalMatch[0] : '';
-                
+
+                // Extract breast size (formerly physical features)
+                const breastMatch = promptInput.match(/\((?:size )?32[a-c] breasts(?::[\d.]+)?\)/i);
+                const breastSize = breastMatch ? breastMatch[0] : '';
+
                 // Extract hair style (current, not permanent)
                 let currentHairStyle = '';
                 hairStyles.forEach(style => {
@@ -1273,24 +2291,22 @@ function doPost(e) {
                 parsedProfileData = {
                     name: name.toLowerCase(),
                     bodyType: bodyType,
-                    expression: expression,
                     hairColor: hairColor,
                     ethnicity: ethnicity,
-                    physicalFeatures: physicalFeatures
+                    breastSize: breastSize
                 };
 
                 // Display results
                 let html = '';
                 html += `<div class="parsed-item"><strong>Name:</strong> ${parsedProfileData.name || 'Not found'}</div>`;
                 html += `<div class="parsed-item"><strong>Body Type:</strong> ${parsedProfileData.bodyType || 'Not found'}</div>`;
-                html += `<div class="parsed-item"><strong>Expression:</strong> ${parsedProfileData.expression || 'Not found'}</div>`;
                 html += `<div class="parsed-item"><strong>Hair Color:</strong> ${parsedProfileData.hairColor || 'Not found'}</div>`;
                 html += `<div class="parsed-item"><strong>Ethnicity:</strong> ${parsedProfileData.ethnicity || 'Not found'}</div>`;
-                html += `<div class="parsed-item"><strong>Physical Features:</strong> ${parsedProfileData.physicalFeatures || 'Not found'}</div>`;
+                html += `<div class="parsed-item"><strong>Breast Size:</strong> ${parsedProfileData.breastSize || 'Not found'}</div>`;
                 if (currentHairStyle) {
                     html += `<div class="parsed-item"><strong>Current Hair Style:</strong> ${currentHairStyle} (not part of permanent profile)</div>`;
                 }
-                
+
                 parsedContent.innerHTML = html;
                 resultsDiv.style.display = 'block';
 
@@ -1321,10 +2337,10 @@ function doPost(e) {
             profiles[profileName] = {
                 name: parsedProfileData.name,
                 bodyType: parsedProfileData.bodyType,
-                expression: parsedProfileData.expression,
                 hairColor: parsedProfileData.hairColor,
                 ethnicity: parsedProfileData.ethnicity,
-                physicalFeatures: parsedProfileData.physicalFeatures
+                breastSize: parsedProfileData.breastSize,
+                contentType: 'sfw' // Default to SFW when creating from parsed data
             };
 
             // Update UI
@@ -1336,7 +2352,7 @@ function doPost(e) {
             // Hide parser results
             document.getElementById('parsed-results').style.display = 'none';
             document.getElementById('prompt-input').value = '';
-            
+
             showMessage(`Profile "${profileName}" created successfully!`);
         }
 
@@ -1350,8 +2366,122 @@ function doPost(e) {
             }, 5000);
         }
 
+        // Initialize checkboxes
+        function initializeCheckboxes() {
+            // Shot types
+            const shotTypeContainer = document.getElementById('shot-type-checkboxes');
+            shotTypes.forEach(item => {
+                const div = createCheckbox('shot-type', item.id, item.label, item.value);
+                shotTypeContainer.appendChild(div);
+            });
+
+            // Camera angles
+            const angleContainer = document.getElementById('camera-angle-checkboxes');
+            cameraAngles.forEach(item => {
+                const div = createCheckbox('camera-angle', item.id, item.label, item.value);
+                angleContainer.appendChild(div);
+            });
+
+            // Cameras
+            const cameraContainer = document.getElementById('camera-checkboxes');
+            Object.entries(cameraModels).forEach(([brand, models]) => {
+                models.forEach((model, index) => {
+                    const id = `${brand.toLowerCase().replace(/\s+/g, '-')}-${index}`;
+                    const div = createCheckbox('camera', id, model, model);
+                    cameraContainer.appendChild(div);
+                });
+            });
+
+            // Expressions
+            const expressionContainer = document.getElementById('expression-checkboxes');
+            facialExpressions.forEach((expr, index) => {
+                const id = `expr-${index}`;
+                const div = createCheckbox('expression', id, expr, expr);
+                expressionContainer.appendChild(div);
+            });
+
+            // Lighting
+            const lightingContainer = document.getElementById('lighting-checkboxes');
+            lightingCombinations.forEach((light, index) => {
+                const id = `light-${index}`;
+                const div = createCheckbox('lighting', id, light, light);
+                lightingContainer.appendChild(div);
+            });
+
+            // Initialize poses
+            updatePoseCheckboxes();
+
+            // Select all by default
+            toggleAll('shot-type');
+            toggleAll('camera-angle');
+            toggleAll('camera');
+            toggleAll('expression');
+            toggleAll('lighting');
+            toggleAll('pose');
+        }
+
+        // Create checkbox element
+        function createCheckbox(category, id, label, value) {
+            const div = document.createElement('div');
+            div.className = 'checkbox-item';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `${category}-${id}`;
+            checkbox.value = value;
+            checkbox.dataset.category = category;
+
+            const labelEl = document.createElement('label');
+            labelEl.htmlFor = checkbox.id;
+            labelEl.textContent = label;
+
+            div.appendChild(checkbox);
+            div.appendChild(labelEl);
+
+            return div;
+        }
+
+        // Update pose checkboxes based on category
+        function updatePoseCheckboxes() {
+            const category = document.getElementById('pose-category-select').value;
+            const container = document.getElementById('pose-checkboxes');
+            container.innerHTML = '';
+
+            let poses = [];
+            if (category === 'all') {
+                Object.values(poseCategories).forEach(cat => {
+                    poses = poses.concat(cat.poses);
+                });
+            } else if (poseCategories[category]) {
+                poses = poseCategories[category].poses;
+            }
+
+            poses.forEach((pose, index) => {
+                const id = `pose-${category}-${index}`;
+                const div = createCheckbox('pose', id, pose, pose);
+                container.appendChild(div);
+            });
+
+            // Select all poses by default
+            toggleAll('pose');
+        }
+
+        // Toggle all checkboxes in a category
+        function toggleAll(category) {
+            const checkboxes = document.querySelectorAll(`input[data-category="${category}"]`);
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+        }
+
+        // Get selected options
+        function getSelectedOptions(category) {
+            const checkboxes = document.querySelectorAll(`input[data-category="${category}"]:checked`);
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
         // Initialize page
         function initializePage() {
+            initializeCheckboxes();
             updateProfileSelect();
             // Load first profile if exists
             const profileNames = Object.keys(profiles);
@@ -1366,7 +2496,7 @@ function doPost(e) {
         function updateProfileSelect() {
             const select = document.getElementById('profile-select');
             select.innerHTML = '<option value="">Select a profile...</option>';
-            
+
             Object.keys(profiles).forEach(profileName => {
                 const option = document.createElement('option');
                 option.value = profileName;
@@ -1379,16 +2509,19 @@ function doPost(e) {
         function loadProfile() {
             const profileName = document.getElementById('profile-select').value;
             if (!profileName) return;
-            
+
             currentProfileName = profileName;
             const profile = profiles[profileName];
-            
+
             document.getElementById('char-name').value = profile.name || '';
             document.getElementById('body-type').value = profile.bodyType || '';
-            document.getElementById('expression').value = profile.expression || '';
             document.getElementById('hair-color').value = profile.hairColor || '';
             document.getElementById('ethnicity').value = profile.ethnicity || '';
-            document.getElementById('physical-features').value = profile.physicalFeatures || '';
+            document.getElementById('breast-size').value = profile.breastSize || '';
+
+            // Restore content type selection
+            const contentType = profile.contentType || 'sfw';
+            document.querySelector(`input[name="content-type"][value="${contentType}"]`).checked = true;
         }
 
         // Save current profile
@@ -1397,18 +2530,30 @@ function doPost(e) {
                 showMessage('Please select or create a profile first');
                 return;
             }
-            
+
             profiles[currentProfileName] = {
                 name: document.getElementById('char-name').value,
                 bodyType: document.getElementById('body-type').value,
-                expression: document.getElementById('expression').value,
                 hairColor: document.getElementById('hair-color').value,
                 ethnicity: document.getElementById('ethnicity').value,
-                physicalFeatures: document.getElementById('physical-features').value
+                breastSize: document.getElementById('breast-size').value,
+                contentType: document.querySelector('input[name="content-type"]:checked').value
             };
-            
-            showMessage('Profile saved successfully!');
-            
+
+            // Automatically create and download JSON file
+            const dataStr = JSON.stringify(profiles, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${currentProfileName.toLowerCase().replace(/\s+/g, '-')}-profile.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showMessage('Profile saved and downloaded successfully!');
+
             // Auto-sync if connected to Sheets
             if (sheetsUrl) {
                 syncWithSheets();
@@ -1429,34 +2574,32 @@ function doPost(e) {
                 alert('Please enter a profile name');
                 return;
             }
-            
+
             if (profiles[profileName]) {
                 alert('A profile with this name already exists');
                 return;
             }
-            
+
             // Clear form
             document.getElementById('char-name').value = '';
             document.getElementById('body-type').value = '';
-            document.getElementById('expression').value = '';
             document.getElementById('hair-color').value = '';
             document.getElementById('ethnicity').value = '';
-            document.getElementById('physical-features').value = '';
-            
+            document.getElementById('breast-size').value = '';
+
             // Add new profile
             profiles[profileName] = {
                 name: '',
                 bodyType: '',
-                expression: '',
                 hairColor: '',
                 ethnicity: '',
-                physicalFeatures: ''
+                breastSize: ''
             };
-            
+
             currentProfileName = profileName;
             updateProfileSelect();
             document.getElementById('profile-select').value = profileName;
-            
+
             closeModal();
             showMessage('New profile created. Please fill in the details and save.');
         }
@@ -1467,24 +2610,23 @@ function doPost(e) {
                 showMessage('Please select a profile to delete');
                 return;
             }
-            
+
             if (confirm(`Are you sure you want to delete the profile "${currentProfileName}"?`)) {
                 delete profiles[currentProfileName];
-                
+
                 currentProfileName = '';
                 document.getElementById('profile-select').value = '';
-                
+
                 // Clear form
                 document.getElementById('char-name').value = '';
                 document.getElementById('body-type').value = '';
-                document.getElementById('expression').value = '';
                 document.getElementById('hair-color').value = '';
                 document.getElementById('ethnicity').value = '';
-                document.getElementById('physical-features').value = '';
-                
+                document.getElementById('breast-size').value = '';
+
                 updateProfileSelect();
                 showMessage('Profile deleted successfully');
-                
+
                 // Auto-sync if connected to Sheets
                 if (sheetsUrl) {
                     syncWithSheets();
@@ -1520,14 +2662,14 @@ function doPost(e) {
                 alert('Please paste the profile data');
                 return;
             }
-            
+
             try {
                 const importedProfiles = JSON.parse(importData);
                 profiles = { ...profiles, ...importedProfiles };
                 updateProfileSelect();
                 closeImportModal();
                 showMessage('Profiles imported successfully!');
-                
+
                 // Auto-sync if connected to Sheets
                 if (sheetsUrl) {
                     syncWithSheets();
@@ -1556,23 +2698,41 @@ function doPost(e) {
             document.getElementById('importModal').style.display = 'none';
         }
 
-        // Generate prompt - UPDATED to handle multiple prompts
+        // Generate prompt - UPDATED with content type and checkbox selections
         function generatePrompt() {
             if (!currentProfileName) {
                 showMessage('Please select a profile first');
                 return;
             }
-            
+
             // Get character profile values
             const charName = document.getElementById('char-name').value;
             const bodyType = document.getElementById('body-type').value;
-            const expression = document.getElementById('expression').value;
             const hairColor = document.getElementById('hair-color').value;
             const ethnicity = document.getElementById('ethnicity').value;
-            const physicalFeatures = document.getElementById('physical-features').value;
+            const breastSize = document.getElementById('breast-size').value;
 
-            if (!charName || !bodyType || !expression || !hairColor || !ethnicity) {
+            if (!charName || !bodyType || !hairColor || !ethnicity || !breastSize) {
                 showMessage('Please fill in all profile fields');
+                return;
+            }
+
+            // Get content type
+            const contentType = document.querySelector('input[name="content-type"]:checked').value;
+
+            // Get selected options
+            const selectedShotTypes = getSelectedOptions('shot-type');
+            const selectedAngles = getSelectedOptions('camera-angle');
+            const selectedCameras = getSelectedOptions('camera');
+            const selectedExpressions = getSelectedOptions('expression');
+            const selectedLighting = getSelectedOptions('lighting');
+            const selectedPoses = getSelectedOptions('pose');
+
+            // Check if any options are selected
+            if (selectedShotTypes.length === 0 || selectedAngles.length === 0 ||
+                selectedCameras.length === 0 || selectedExpressions.length === 0 ||
+                selectedLighting.length === 0 || selectedPoses.length === 0) {
+                showMessage('Please select at least one option from each category');
                 return;
             }
 
@@ -1581,30 +2741,78 @@ function doPost(e) {
             const maxQuantity = 10000;
             const finalQuantity = Math.min(Math.max(1, quantity), maxQuantity);
 
+            // Select appropriate outfit array based on content type
+            let currentOutfits;
+            let characterModification = '';
+
+            switch(contentType) {
+                case 'topless':
+                    currentOutfits = nsfwToplessOutfits;
+                    characterModification = '(topless:1.4) perky breasts, ';
+                    break;
+                case 'nude':
+                    currentOutfits = nsfwNudeOutfits;
+                    characterModification = '(nude:1.2) perky breasts, naked body, ';
+                    break;
+                default:
+                    currentOutfits = outfits;
+                    characterModification = '';
+            }
+
             // Generate multiple prompts
             const prompts = [];
             for (let i = 0; i < finalQuantity; i++) {
-                // Random selections for each prompt
-                const shotType = shotTypes[Math.floor(Math.random() * shotTypes.length)];
-                const cameraAngle = cameraAngles[Math.floor(Math.random() * cameraAngles.length)];
-                const pose = poses[Math.floor(Math.random() * poses.length)];
+                // Random selections from filtered options
+                const shotType = selectedShotTypes[Math.floor(Math.random() * selectedShotTypes.length)];
+                const cameraAngle = selectedAngles[Math.floor(Math.random() * selectedAngles.length)];
+                const camera = selectedCameras[Math.floor(Math.random() * selectedCameras.length)];
+                const pose = selectedPoses[Math.floor(Math.random() * selectedPoses.length)];
                 const hairStyle = hairStyles[Math.floor(Math.random() * hairStyles.length)];
-                const outfit = outfits[Math.floor(Math.random() * outfits.length)];
-                const location = locations[Math.floor(Math.random() * locations.length)];
+                const expression = selectedExpressions[Math.floor(Math.random() * selectedExpressions.length)];
+                const outfit = currentOutfits[Math.floor(Math.random() * currentOutfits.length)];
+                const lighting = selectedLighting[Math.floor(Math.random() * selectedLighting.length)];
 
-                // Construct the prompt
-                const prompt = `${shotType}, ${cameraAngle}(Intricate detail, cinematic lighting, professional photography) of a girl age 18 ${pose}. Her name is ${charName}, ${bodyType}, ${expression}, ${hairStyle}, ${hairColor}, ${ethnicity}, ${physicalFeatures}, ${outfit}, ${location}`;
-                
+                // Determine if indoor or outdoor
+                const isIndoor = Math.random() < 0.5;
+                let locationBase;
+
+                if (isIndoor) {
+                    locationBase = locationBases[Math.floor(Math.random() * locationBases.length)];
+                } else {
+                    locationBase = outdoorLocationBases[Math.floor(Math.random() * outdoorLocationBases.length)];
+                }
+
+                // LAYER 1: Shot type, angle, camera, age, pose
+                const layer1 = `${shotType}, ${cameraAngle}, (Intricate detail, professional photography) Shot on ${camera} of a girl age 18 ${pose}`;
+
+                // LAYER 2: Character description with modifications for NSFW
+                const layer2 = `Her name is ${charName}, ${ethnicity}, ${hairColor}, ${hairStyle}, ${bodyType}, ${characterModification}${breastSize}`;
+
+                // LAYER 3: Expression, clothing, scenery, lighting
+                const layer3 = `${expression}, ${outfit}, ${locationBase}, ${lighting}`;
+
+                // Construct the complete prompt
+                const positivePrompt = `${layer1}. ${layer2}, ${layer3}`;
+
+                // Only include negative prompt for NSFW content
+                let prompt;
+                if (contentType === 'sfw') {
+                    prompt = positivePrompt;
+                } else {
+                    const negativePrompt = negativePrompts[contentType];
+                    prompt = `${positivePrompt}\n\nNegative prompt: ${negativePrompt}`;
+                }
+
                 prompts.push(prompt);
             }
 
             // Display the prompts
             const promptContainer = document.getElementById('generated-prompt');
-            promptContainer.textContent = prompts.join('\n\n');
-            
+            promptContainer.textContent = prompts.join('\n\n---\n\n');
+
             // Update counter
             const counter = document.getElementById('prompt-counter');
-            counter.textContent = `Generated ${finalQuantity} prompt${finalQuantity > 1 ? 's' : ''}`;
+            counter.textContent = `Generated ${finalQuantity} ${contentType.toUpperCase()} prompt${finalQuantity > 1 ? 's' : ''}`;
         }
 
         // Copy to clipboard
